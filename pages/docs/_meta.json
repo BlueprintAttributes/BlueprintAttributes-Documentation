@@ -1,0 +1,31 @@
+{
+  "index": {
+    "title": "Introduction"
+  },
+  "project-setup": "Project Setup",
+  "---Getting Started---": {
+    "type": "separator",
+    "title": "Getting Started"
+  },
+  "create-blueprint-attribute-set": "Create a Blueprint Attribute Set",
+  "blueprint-attributes-editor": "Blueprint Attributes Editor",
+  "attribute-sets": "Attribute Sets", 
+  "gameplay-effects": "Gameplay Effects", 
+  "---Core Concepts---": {
+    "type": "separator",
+    "title": "Technical Details"
+  },
+  "core-concepts": "Core Concepts",
+  "---": {
+    "type": "separator",
+    "title": ""
+  },
+  "reference": "API Reference",
+  "changelog": {
+    "title": "Changelog",
+    "href": "https://github.com/vercel/turbo/releases",
+    "newWindow": true
+  },
+  "acknowledgements": "Acknowledgements",
+  "faq": "FAQ"
+}

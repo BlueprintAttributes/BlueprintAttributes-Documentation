@@ -1,0 +1,6 @@
+{
+  "PreAttributeChange": "PreAttributeChange / PreAttributeBaseChange",
+  "PostAttributeChange": "PostAttributeChange / PostAttributeBaseChange",
+  "PreGameplayEffectExecute": "PreGameplayEffectExecute",
+  "PostGameplayEffectExecute": "PostGameplayEffectExecute"
+}

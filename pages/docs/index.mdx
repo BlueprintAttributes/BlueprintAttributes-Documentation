@@ -1,0 +1,95 @@
+---
+title: Turborepo Quickstart
+description: Create your first monorepo or add Turborepo to an existing project.
+---
+
+import { Callout } from 'nextra/components'
+
+# Welcome to Nextras
+
+<Callout type="info">
+  This guide uses a global installation of `turbo`. Follow the [installation guide](../installing)
+  to get this setup. Alternatively, you can use your package manager to run a locally installed `turbo`
+  in the commands below.
+</Callout>
+
+## What is the Gameplay Ability System and Why Use It?
+
+The Gameplay Ability System is a plugin that provides a framework for quickly implementing and iterating on gameplay mechanics. When writing code for complex gameplay mechanics that can include multiplayer, you may write a lot of common boilerplate functionality that applies over many different game types.
+
+GAS attempts to abstract mechanics into common game design patterns, and provides a framework that solves common gameplay implementation problems while letting context vary from project to project.
+
+Writing boilerplate code is often error-prone and time consuming, especially for multiplayer games. For example, you don't want to spend a significant amount of time ensuring your Health values are replicating correctly, or copying the same lines of code over when you decide to have an Energy value that behaves identically.
+
+The GAS addresses these issues by providing a foundation that fulfills common gameplay functionality as much as possible, while staying mechanic-neutral. Instead of forcing concepts such as Health, Ammo, Melee Attack, or Poison Debuff, GAS provides tools to define, replicate, and work with Attributes, Abilities, and Effects, which can then be specialized to fulfill the needs of the given gameplay mechanic.
+
+GAS is structured around the following core classes. Lyra extends many of these to provide additional functionality:
+
+Core Class
+
+Description
+
+UAbilitySystemComponent
+
+An Ability System Component (ASC) can be added to any Actor to provide it with GAS functionality. This keeps track of the state for that specific Actor, and handles replication.
+
+UAttributeSet
+
+A collection of Attributes, or numeric values with a specific meaning within your game mechanics. Attributes can represent game resources such as ‘Health', reference values that can affect other game rules, such as ‘Base Attack Power', or even stateless quantities such as ‘Applied Damage'. Attribute Sets are responsible for defining, managing and replicating one or more Attribute properties.
+
+FGameplayTag
+
+An arbitrary hierarchical identifier that can be applied to a game object. These can be used to identify, categorize, and filter game entities. They can be granted or revoked by Gameplay Effects and Abilities, and can affect their behavior. One example is a ‘Gameplay.DamageImmunity' tag that prevents damage on an owner's avatar/pawn.
+
+UGameplayAbility
+
+A game action that can be granted to, and performed by, a GAS-enabled Actor, along with information to determine its requirements, costs, and other behaviors. Examples range from basic melee attacks to a self-contained game menu flow to a triggered behavior caused by another game action.
+
+UGameplayEffect
+
+The consequences of a game action. Effects can temporarily or permanently modify attributes, grant or revoke tags, enable access to other abilities, and much more. Gameplay Effects are the most common way in which GAS-enabled Actors interact with each other.
+
+The main benefits of GAS are:
+
+Network Replication: You don't need to worry about ensuring your attributes or debuffs are applying or replicating properly. GAS takes care of the inner logic for you.
+
+Modularity: Adding or changing game mechanics is often as easy as implementing and granting a new ability. By breaking down gameplay functionality into separate assets, the ability system can provide a common communication layer between radically different game objects or mechanics. For example, Health can be compartmentalized into its own Attribute Set and interacted with through Gameplay Effects from a variety of systems.
+
+Fast iteration: GAS makes it easy to change individual game rules without the need to modify the entire system. Data sources for game calculations can be easily swapped, and changing the consequences of an action can be modified from the corresponding Gameplay Effect.
+ 
+Hello, world!
+
+```js filename="tailwind.config.js" showLineNumbers
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    './pages/**/*.{js,jsx,ts,tsx,md,mdx}',
+    './components/**/*.{js,jsx,ts,tsx,md,mdx}',
+ 
+    // Or if using `src` directory:
+    './src/**/*.{js,jsx,ts,tsx,md,mdx}'
+  ],
+  theme: {
+    extend: {}
+  },
+  plugins: []
+}
+```
+
+```ini filename="config/DefaultGame.ini"
+[/Script/BlueprintAttributesEditor.GBAEditorSettings]
+bUseCompactView=False
+HeaderFormatText=NSLOCTEXT("[/Script/BlueprintAttributesEditor]", "66324208429F69E6BC5C6281BEF3C7CF", "🙌 Attribute Value: {0} 🚀😂")
+```
+
+```cpp filename="UMyClass.h"
+class FGBAModule : public IModuleInterface
+{
+public:
+
+	/** IModuleInterface implementation */
+	virtual void StartupModule() override;
+	virtual void ShutdownModule() override;
+};
+
+```
