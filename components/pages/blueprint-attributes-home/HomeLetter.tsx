@@ -51,7 +51,7 @@ export function HomeLetter() {
 
           <p>
             The plugin comes with nearly 100 C++ classes to try to provide the best developer experience, and stay true to the Gameplay Abilities ecosystem and workflow.
-            Ranging from runtime module with UAttributeSet to inherit from, custom UBlueprint and UBlueprintEditor, to editor modules and dozens of Details Customizations classes and Slate widgets.
+            Ranging from runtime module with UAttributeSet to inherit from, custom UBlueprint and FBlueprintEditor, to editor modules and dozens of Details Customizations classes and Slate widgets.
           </p>
           <br />
 
