@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "export": "next export",
-    "bexport": "next build && next export",
+    "export": "next build && shx touch out/.nojekyll",
     "start": "next start"
   },
   "keywords": [],
@@ -27,6 +26,7 @@
     "@types/node": "^20.6.0",
     "autoprefixer": "^10.4.15",
     "postcss": "^8.4.29",
+    "shx": "^0.3.4",
     "tailwindcss": "^3.3.3",
     "typescript": "^5.2.2"
   }
