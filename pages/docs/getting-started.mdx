@@ -283,6 +283,8 @@ You could also use Gameplay Abilities activated on Input, to apply an Instant Ga
 
 <Callout type="default">
 This demonstration setup can be found in the [Content Examples project](/docs/resources/content-examples-project) in the `02_Builtin_Clamping` map.
+
+Also, most of the assets specific to this example are prefixed with `GE_Clamping_` to easily find them in the Editor with `Ctrl+P`.
 </Callout>
 
 For these instructions, I'm using an AttributeSet made just for this clamping demonstration, with a single Health Attribute variable.
@@ -383,12 +385,55 @@ We can then go back to the clamped definitions of `Endurance`, by selecting the 
 
 <Zoom>
 ![](./getting-started/AttributeSets_Clamping_Property_06.png)
+*We also changed the initial Base Value to be at 100 to make it start from the higher limit.*
 </Zoom>
 
 <Callout type="default">
 Take note that only the Attributes belonging to the same Attribute Set are intentionally selectable. This deliberate design choice serves to prevent interdependence between different Attribute Set classes and to maintain the principle of encapsulation.
 </Callout>
 
+**Test Setup <a href="#built-in-clamping-testsetup-2" id="built-in-clamping-testsetup-2" className="subheading-anchor" aria-label="Permalink for this section"></a>**
+
+Let's quickly create a few Gameplay Effects to play around our new `Endurance` attribute value. We'll need:
+
+- A regen Gameplay Effect to continuously add a certain amount of `Endurance` point.
+- A Gameplay Effect to arbitrarely change the value of `MaxEndurance` attribute (imagine equipping an item that increase the total amount of Endurance available) which is going to indirectly affect the maximum value for the `Endurance` attribute.
+
+<Callout type="info">
+The few following Blueprints are set to "Show Only Modified Properties"
+</Callout>
+
+**GE_Clamping_EnduranceRegen**
+<Zoom>
+![](./getting-started/AttributeSets_Clamping_Property_08.png)
+*This is an infinite Gameplay Effect*
+</Zoom>
+
+**GE_Clamping_MaxEnduranceBuff**
+<Zoom>
+![](./getting-started/AttributeSets_Clamping_Property_09.png)
+*This is a duration Gameplay Effect, meaning it will only last for 2 second, and increase `MaxEndurance` by 10%.*
+</Zoom>
+
+<Callout type="warning">
+Don't forget to apply **GE_Clamping_EnduranceRegen** just like we did for the HealthRegen as one of the startup effects to apply.
+</Callout>
+
+Time to PIE test. Here we used the `AbilitySystem.DebugAttribute Endurance MaxEndurance` command once to display their value as an additional overlay.
+
+<details open="true" class="details-reset border rounded-2">
+  <summary class="px-3 py-2">
+    <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-device-camera-video">
+    <path d="M16 3.75v8.5a.75.75 0 0 1-1.136.643L11 10.575v.675A1.75 1.75 0 0 1 9.25 13h-7.5A1.75 1.75 0 0 1 0 11.25v-6.5C0 3.784.784 3 1.75 3h7.5c.966 0 1.75.784 1.75 1.75v.675l3.864-2.318A.75.75 0 0 1 16 3.75Zm-6.5 1a.25.25 0 0 0-.25-.25h-7.5a.25.25 0 0 0-.25.25v6.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-6.5ZM11 8.825l3.5 2.1v-5.85l-3.5 2.1Z"></path>
+</svg>
+    <span aria-label="Video description video.mp4" class="m-1">*By stepping onto the Pad Button, we apply the Gameplay Effect buff to increase temporarily our `MaxAttribute` value for 2s (or removed when we step out of the Pad).*</span>
+    <span class="dropdown-caret"></span>
+  </summary>
+
+  <video src="https://private-user-images.githubusercontent.com/113832/268473680-2a2dbdcc-bde8-45bb-8d15-3063ff7c4a97.mp4?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTEiLCJleHAiOjE2OTQ5MDMzOTksIm5iZiI6MTY5NDkwMzA5OSwicGF0aCI6Ii8xMTM4MzIvMjY4NDczNjgwLTJhMmRiZGNjLWJkZTgtNDViYi04ZDE1LTMwNjNmZjdjNGE5Ny5tcDQ_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBSVdOSllBWDRDU1ZFSDUzQSUyRjIwMjMwOTE2JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDIzMDkxNlQyMjI0NTlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0xNTU4N2U5MTIwZmQ5ZTdiOGE1ZmZhYzc0M2ZjYWE5NzI2YThjNDJmOGY0Mzc4ZTUwYWEzOWZkYTlkYjQ5NWQzJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.nFgRYzYQjmznhFgyWJPWOcoQlCbEd4NQLKryESgu7mk" controls="controls" muted="muted" class="d-block rounded-bottom-2 border-top width-fit" style={{ maxHeight: "640px", minHeight: "200px"}}>
+
+  </video>
+</details>
 
 #### Manual Clamping
 
