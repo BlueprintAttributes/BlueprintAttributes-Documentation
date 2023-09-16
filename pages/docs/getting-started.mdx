@@ -255,6 +255,12 @@ You can perform Attributes clamping with one of three methods, two of which are 
 * **[with Gameplay Clamped Attribute Data properties](#with-gameplay-clamped-attribute-data-properties)** - A customizable clamping using a special Gameplay Clamped Attribute Data property (a child of FGameplayAttributeData) with float or Attribute-based clamping.
 * **[Manual Clamping](#manual-clamping)** - You'd implement the clamping behavior yourself, with your own rules with the BP exposed method / events of Attribute Sets (PreAttributeChange(), PreAttributeBaseChange() or PostGameplayEffectExecute())
 
+`UGBAAttributeSetBlueprintBase::PostGameplayEffectExecute()` is the method responsible of clamping, and the order for those is the following:
+
+1. Manual Clamping (if done in PostGameplayEffectExecute BP Event)
+2. Clamping via Clamped Properties (if the Attribute is implemented as a `FGBAGameplayClampedAttributeData`).
+3. Clamping via DataTables Min and Max value columns (if the Set was initialized with a DataTable, and if `MinValue < MaxValue`).
+
 **Test Setup <a href="#built-in-clamping-testsetup" id="built-in-clamping-testsetup" class="subheading-anchor" aria-label="Permalink for this section"></a>**
 
 To better illustrate the clamping behavior in-game, we'll use Gameplay Effects with Infinite duration to setup a regen and degen mechanic for the Health Attribute.
@@ -263,7 +269,9 @@ To better illustrate the clamping behavior in-game, we'll use Gameplay Effects w
 You could also use Gameplay Abilities activated on Input, to apply an Instant Gameplay Effect to either damage or heal the Character (by adding or removing a set of amount of Hit Points from the Health Attribute).
 </Callout>
 
+<Callout type="default">
 This demonstration setup can be found in the [Content Examples project](/docs/resources/content-examples-project) in the `02_Builtin_Clamping` map.
+</Callout>
 
 For these instructions, I'm using an AttributeSet made just for this clamping demonstration, with a single Health Attribute variable.
 
@@ -318,6 +326,47 @@ To test lower and higher bound limits we configured for the clamping, we can use
 
 
 #### With Gameplay Clamped Attribute Data properties
+
+Add a new Attribute for your set, but this time using a `FGBAGameplayClampedAttributeData`. You can quickly do so by clicking on the "Add Attribute" button in the Blueprint Editor Toolbar, and choosing the appropriate type.
+
+<Callout type="default">
+Once again, you can find the implementation described here as part of the [Content Examples project](/docs/resources/content-examples-project) in the `02_Builtin_Clamping` map.
+</Callout>
+
+This time, we are going to implement an `Endurance` Attribute (a classic!) that will act as a resource cost for a given set of actions. In this simplistic example, it's going to be on a Jump ability (another classic!).
+
+![](./getting-started/AttributeSets_Clamping_Property_01.png)
+
+![](./getting-started/AttributeSets_Clamping_Property_02.png)
+
+If you then compile the Blueprint and select the newly added variable, you'll see in the Details panel a slightly different display.
+
+![](./getting-started/AttributeSets_Clamping_Property_03.png)
+
+`FGBAGameplayClampedAttributeData` is a child struct of `FGameplayAttributeData`, it contains the usual Base Value, along with two new `FGBAClampDefinition` properties: a `MinValue` and a `MaxValue`.
+
+The Clamp definition for both of these provides a `Clamp Type` behavior:
+
+- **Float Based (default)**: Uses a simple, static float for the clamping.
+- **Attribute Based**: Performs a clamping based upon another attribute.
+- **None**: Clamping is disabled for this definition.
+
+We need another Attribute to demonstrate the Attribute Based clamping type for our `Endurance` attribute called `MaxEndurance`. Let's quickly create the new attribute.
+
+![](./getting-started/AttributeSets_Clamping_Property_04.png)
+
+You can then give it an arbitrary value (and / or use an initialization DataTable to set its value):
+
+![](./getting-started/AttributeSets_Clamping_Property_05.png)
+
+We can then go back to the clamped definitions of `Endurance`, by selecting the variable or using the Class Defaults view, and adjust the clamping definition for `MaxValue` to be based on the `MaxEndurance` attribute.
+
+![](./getting-started/AttributeSets_Clamping_Property_06.png)
+
+<Callout type="default">
+Take note that only the Attributes belonging to the same Attribute Set are intentionally selectable. This deliberate design choice serves to prevent interdependence between different Attribute Set classes and to maintain the principle of encapsulation.
+</Callout>
+
 
 #### Manual Clamping
 
