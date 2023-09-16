@@ -3,6 +3,7 @@ description: Get started with Blueprint Attributes and define Attribute Sets and
 ---
 
 import { Callout } from 'nextra/components'
+import Zoom from 'react-medium-image-zoom'
 
 
 # Getting started
@@ -31,7 +32,9 @@ Doing so will ensure the Blueprint is using a specific UBlueprint (UGBAAttribute
 
 Upon first opening, the Blueprint Editor will look like this.
 
+<Zoom>
 ![T_BlueprintEditor](./getting-started/T_BlueprintEditor.png)
+</Zoom>
 
 A few additional buttons can be found in the toolbar, next to the PIE and Debugging controls.
 
@@ -98,7 +101,9 @@ You can customize that part of the Editor with few Details Customization option 
 
 Open up the Project Settings, then scroll down to the bottom of the sidebar. You should see a "Blueprint Attributes" section where all the configurable settings for the Plugin can be found.
 
+<Zoom>
 ![T_Project_Settings](./getting-started/T_Project_Settings.png)
+</Zoom>
 
 **Use Compact View**
 
@@ -144,7 +149,7 @@ If we know test in-game and use the gameplay debugger, we can see the Attributes
 
 #### Gameplay Debugger
 
-Hit Play and launch the game in PIE, and open up the console command by pressing the backtick key <code class="nx-border-black nx-border-opacity-[0.04] nx-bg-opacity-[0.03] nx-bg-black nx-break-words nx-rounded-md nx-border nx-py-0.5 nx-px-[.25em] nx-text-[.9em] dark:nx-border-white/10 dark:nx-bg-white/10">\`</code> (normally located below the ESC key) on QWERTY keyboards or the `²` on AZERTY keyboards.
+Hit Play and launch the game in PIE, and open up the console command by pressing the backtick key <code className="nx-border-black nx-border-opacity-[0.04] nx-bg-opacity-[0.03] nx-bg-black nx-break-words nx-rounded-md nx-border nx-py-0.5 nx-px-[.25em] nx-text-[.9em] dark:nx-border-white/10 dark:nx-bg-white/10">\`</code> (normally located below the ESC key) on QWERTY keyboards or the `²` on AZERTY keyboards.
 
 <Callout type="info">
 You can customize this in `Project Settings > Engine > Input > Console > Console Keys`.
@@ -219,7 +224,9 @@ You have the option to add extra rows to support Attribute Sets with multiple Ga
 
 The syntax for the row name is `AttributeClassName.AttributeName` (without the "U" prefix for C++ defined Attribute Set, and without the "_C" suffix for Blueprint defined Attribute Set).
 
+<Zoom>
 ![](./getting-started/AttributeSets_Init_DataTable_01.png)
+</Zoom>
 
 ###### Automatically with `Create DataTable` Toolbar Button
 
@@ -229,7 +236,9 @@ It'll generate additional rows for each defined Attributes, with their Base Valu
 
 If you click on the "Create DataTable" button, you'll get the following window:
 
+<Zoom classDialog="">
 ![](./getting-started/AttributeSets_Init_DataTable_02.png)
+</Zoom>
 
 If you click on "Save" next, a new DataTable asset with the appropriate row type and content generated based on your defined attributes will be created.
 
@@ -238,12 +247,15 @@ If you click on "Save" next, a new DataTable asset with the appropriate row type
 
 Here is an example for a Blueprint AttributeSet with slightly more Gameplay Attributes, and their BaseValue slightly modified:
 
+<Zoom>
 ![](./getting-started/AttributeSets_Init_Details_DefaultValue_04.png)
+</Zoom>
 
 And here is the resulting DataTable:
 
+<Zoom>
 ![](./getting-started/AttributeSets_Init_Details_DefaultValue_05.png)
-
+</Zoom>
 
 ### Built-in Clamping
 
@@ -261,7 +273,7 @@ You can perform Attributes clamping with one of three methods, two of which are 
 2. Clamping via Clamped Properties (if the Attribute is implemented as a `FGBAGameplayClampedAttributeData`).
 3. Clamping via DataTables Min and Max value columns (if the Set was initialized with a DataTable, and if `MinValue < MaxValue`).
 
-**Test Setup <a href="#built-in-clamping-testsetup" id="built-in-clamping-testsetup" class="subheading-anchor" aria-label="Permalink for this section"></a>**
+**Test Setup <a href="#built-in-clamping-testsetup" id="built-in-clamping-testsetup" className="subheading-anchor" aria-label="Permalink for this section"></a>**
 
 To better illustrate the clamping behavior in-game, we'll use Gameplay Effects with Infinite duration to setup a regen and degen mechanic for the Health Attribute.
 
@@ -276,15 +288,21 @@ This demonstration setup can be found in the [Content Examples project](/docs/re
 For these instructions, I'm using an AttributeSet made just for this clamping demonstration, with a single Health Attribute variable.
 
 *GBA_Clamping_Example_HealthSet*
+<Zoom>
 ![](./getting-started/AttributeSets_Clamping_TestSetup_01.png)
+</Zoom>
 
 And two Gameplay Effects, one to continuously add to the Health Attribute, one to continuously substract from the Health Attribute.
 
 *GE_Clamping_HealthRegen*
+<Zoom>
 ![](./getting-started/AttributeSets_Clamping_TestSetup_02.png)
+</Zoom>
 
 *GE_Clamping_HealthDegen*
+<Zoom>
 ![](./getting-started/AttributeSets_Clamping_TestSetup_03.png)
+</Zoom>
 
 Both are Infinite Gameplay Effects, with a Period duration of `0.1`, and either adds or remove `10` from the Health Attribute every 100ms.
 
@@ -310,7 +328,9 @@ This is the simplest and quickest way to get clamping done for Gameplay Attribut
 
 This implies you're using a DataTable to initiliaze your Attribute values (eg. [Data Tables section](#data-tables)).
 
+<Zoom>
 ![](./getting-started/AttributeSets_Clamping_DataTable_01.png)
+</Zoom>
 
 If we build upon our previous Attribute Set example, with a single Health Attribute, we can tweak the DataTable used for initialization and set the Min and Max value columns to arbitrary values. In the following example, we'll init the value to 0, but configure the clamping to ensure the value will between 10 to 100.
 
@@ -361,7 +381,9 @@ You can then give it an arbitrary value (and / or use an initialization DataTabl
 
 We can then go back to the clamped definitions of `Endurance`, by selecting the variable or using the Class Defaults view, and adjust the clamping definition for `MaxValue` to be based on the `MaxEndurance` attribute.
 
+<Zoom>
 ![](./getting-started/AttributeSets_Clamping_Property_06.png)
+</Zoom>
 
 <Callout type="default">
 Take note that only the Attributes belonging to the same Attribute Set are intentionally selectable. This deliberate design choice serves to prevent interdependence between different Attribute Set classes and to maintain the principle of encapsulation.
