@@ -96,9 +96,13 @@ Here is an example with an Attribute Set and more Gameplay Attributes.
 
 You can customize that part of the Editor with few Details Customization option in the Project Settings.
 
+Open up the Project Settings, then scroll down to the bottom of the sidebar. You should see a "Blueprint Attributes" section where all the configurable settings for the Plugin can be found.
+
 ![T_Project_Settings](./getting-started/T_Project_Settings.png)
 
-If you turn on Compact View mode in the Project Settings, Details for Gameplay Attributes Data properties will be simplified and use this display.
+**Use Compact View**
+
+If you turn on Compact View mode in the Project Settings, Details for Gameplay Attributes Data properties will be simplified and use a simplified display.
 
 ![T_Project_Settings_02](./getting-started/T_Project_Settings_02.png)
 
@@ -107,6 +111,20 @@ For both class defaults variables and when viewing / editing a single Attribute 
 ![T_Project_Settings_03](./getting-started/T_Project_Settings_03.png)
 
 Only for simple Gameplay Attribute Data properties, clamped properties still display using the full extended version (like the Endurance Attribute above, we'll go over Gameplay Clamped Attribute properties in their own section)
+
+**Header Format Text**
+
+The other relevant setting is "Header Format Text".
+
+Customize how the header row is displayed and what should be included. This is a FText::Format format string, with two floats being passed in as an argument (BaseValue and CurrentValue). Both float values are converted to String with "%.2f" to reduce precision to only two decimals (Default Value: `"Base: {0}, Current: {1}"`)
+
+![T_Project_Settings_04](./getting-started/T_Project_Settings_04.png)
+
+You could even get fancy and use [utf8 emojis](https://quickref.me/emoji.html) in there 😉
+
+![T_Project_Settings_05](./getting-started/T_Project_Settings_05.png)
+
+![T_Project_Settings_06](./getting-started/T_Project_Settings_06.png)
 
 ## Attribute Sets
 
