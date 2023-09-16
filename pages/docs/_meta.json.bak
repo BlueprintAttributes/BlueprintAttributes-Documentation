@@ -8,10 +8,7 @@
     "title": "Getting Started"
   },
   "getting-started": "Create a Blueprint Attribute Set",
-  "blueprint-attributes-editor": {
-    "title": "Blueprint Attributes Editor",
-    "href": "/docs/getting-started#blueprint-attributes-editor"
-  },
+  "blueprint-attributes-editor": "Blueprint Attributes Editor",
   "attribute-sets": "Attribute Sets", 
   "gameplay-effects": "Gameplay Effects", 
   "---Core Concepts---": {
