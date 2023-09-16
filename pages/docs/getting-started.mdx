@@ -200,6 +200,9 @@ Another popular way to initialize attributes beyond their default value, and fur
 
 Both the `InitStats()` method of the ASC and its Default Starting Data property (more infos and options in [Register Attribute Sets with the ASC](/docs/project-setup#register-attribute-sets-with-the-asc)) accepts an additional Data Table and a Gameplay Ability System row type called `AttributeMetaData`.
 
+*Example using InitStats() on Begin Play or Possessed Events*
+![](./getting-started/AttributeSets_Register_BeginPlay_InitStats_02.png)
+
 ##### Creating the Data Table
 
 ###### Manually
@@ -218,7 +221,7 @@ The syntax for the row name is `AttributeClassName.AttributeName` (without the "
 
 ![](./getting-started/AttributeSets_Init_DataTable_01.png)
 
-###### Automatically
+###### Automatically with `Create DataTable` Toolbar Button
 
 The Blueprint Attributes Editor Toolbar provides an additional "Create DataTable" button to quickly create an initialization `AttributeMetaData` Data Table, based on the defined Gameplay Attributes in the Blueprint Editor.
 
@@ -244,9 +247,79 @@ And here is the resulting DataTable:
 
 ### Built-in Clamping
 
-#### Via DataTable
+Clamping of Attribute, to ensure that their values are always within the limits that you set for them, is a common pattern. That's why Blueprint Attributes plugin come with some pre-defined and built-in clamping behavior that you can opt-in.
+
+You can perform Attributes clamping with one of three methods, two of which are the built-in clamping features coming with the plugin.
+
+* **[with DataTable](#with-datatable)** - To initialize the Attributes, and using the MinValue and MaxValue columns. The Attribute Set Blueprint Base class is able to handle those Min/Max column values, and execute a built-in clamping behavior. 
+* **[with Gameplay Clamped Attribute Data properties](#with-gameplay-clamped-attribute-data-properties)** - A customizable clamping using a special Gameplay Clamped Attribute Data property (a child of FGameplayAttributeData) with float or Attribute-based clamping.
+* **[Manual Clamping](#manual-clamping)** - You'd implement the clamping behavior yourself, with your own rules with the BP exposed method / events of Attribute Sets (PreAttributeChange(), PreAttributeBaseChange() or PostGameplayEffectExecute())
+
+**Test Setup <a href="#built-in-clamping-testsetup" id="built-in-clamping-testsetup" class="subheading-anchor" aria-label="Permalink for this section"></a>**
+
+To better illustrate the clamping behavior in-game, we'll use Gameplay Effects with Infinite duration to setup a regen and degen mechanic for the Health Attribute.
+
+<Callout type="info">
+You could also use Gameplay Abilities activated on Input, to apply an Instant Gameplay Effect to either damage or heal the Character (by adding or removing a set of amount of Hit Points from the Health Attribute).
+</Callout>
+
+This demonstration setup can be found in the [Content Examples project](/docs/resources/content-examples-project) in the `02_Builtin_Clamping` map.
+
+For these instructions, I'm using an AttributeSet made just for this clamping demonstration, with a single Health Attribute variable.
+
+*GBA_Clamping_Example_HealthSet*
+![](./getting-started/AttributeSets_Clamping_TestSetup_01.png)
+
+And two Gameplay Effects, one to continuously add to the Health Attribute, one to continuously substract from the Health Attribute.
+
+*GE_Clamping_HealthRegen*
+![](./getting-started/AttributeSets_Clamping_TestSetup_02.png)
+
+*GE_Clamping_HealthDegen*
+![](./getting-started/AttributeSets_Clamping_TestSetup_03.png)
+
+Both are Infinite Gameplay Effects, with a Period duration of `0.1`, and either adds or remove `10` from the Health Attribute every 100ms.
+
+`GE_Clamping_HealthRegen` is configured to only be active if the Owner Character doesn't have `GameplayEffect.Clamping.Degen` Gameplay Tag, which is added by `GE_Clamping_HealthDegen` whenever it's applied.
+
+Next, we need to ensure the Regen Gameplay Effect is applied. Since it's an Infinite Effect, it'll be active indefinitely (or until explicitly removed).
+
+You can simply apply the effect programmatically on Begin Play (or Possesed) event, or using the list of Gameplay Effects to apply your GAS bakend could provide to you (GAS Companion's ASC Granted Effects, or Lyra's Ability Sets and Granted Gameplay Effects)
+
+![](./getting-started/AttributeSets_Clamping_TestSetup_04.png)
+
+Without any clamping applied, the Health Attribute value will go up indefinitely.
+
+![](./getting-started/AttributeSets_Clamping_TestSetup_05.gif)
+
+And similarly go down if we apply the Degen effect (which is done in the Content Examples project by stepping onto the Button Pad Blueprint).
+
+![](./getting-started/AttributeSets_Clamping_TestSetup_06.gif)
+
+#### With DataTable
+
+This is the simplest and quickest way to get clamping done for Gameplay Attributes.
+
+This implies you're using a DataTable to initiliaze your Attribute values (eg. [Data Tables section](#data-tables)).
+
+![](./getting-started/AttributeSets_Clamping_DataTable_01.png)
+
+If we build upon our previous Attribute Set example, with a single Health Attribute, we can tweak the DataTable used for initialization and set the Min and Max value columns to arbitrary values. In the following example, we'll init the value to 0, but configure the clamping to ensure the value will between 10 to 100.
+
+![](./getting-started/AttributeSets_Clamping_DataTable_01.png)
+
+If we launch the game in PIE, we can see the value for the Health Attribute initialized to 10 (started at 0, then clamping took place and set it to 10)
+
+![](./getting-started/AttributeSets_Clamping_DataTable_02.png)
+
+To test lower and higher bound limits we configured for the clamping, we can use the Regen / Degen effect described in the [Test Setup section](#built-in-clamping-testsetup).
+
+![](./getting-started/AttributeSets_Clamping_TestSetup_07.gif)
+
 
 #### With Gameplay Clamped Attribute Data properties
+
+#### Manual Clamping
 
 ### Interactions with Gameplay Effects
 
