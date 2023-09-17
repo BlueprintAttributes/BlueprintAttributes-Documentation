@@ -355,7 +355,7 @@ Add a new Attribute for your set, but this time using a `FGBAGameplayClampedAttr
 Once again, you can find the implementation described here as part of the [Content Examples project](/docs/resources/content-examples-project) in the `02_Builtin_Clamping` map.
 </Callout>
 
-This time, we are going to implement an `Endurance` Attribute (a classic!) that will act as a resource cost for a given set of actions. In this simplistic example, it's going to be on a Jump ability (another classic!).
+This time, we are going to implement an `Endurance` Attribute (a classic! sometimes also called Stamina) that could act as a resource cost for a given set of actions. In this simple example, we'll reuse the Regen mechanic and temporarily increase the higher clamp limit when we step onto a Button Pad.
 
 ![](./getting-started/AttributeSets_Clamping_Property_01.png)
 
@@ -435,6 +435,46 @@ Time to PIE test. Here we used the `AbilitySystem.DebugAttribute Endurance MaxEn
 </details>
 
 #### Manual Clamping
+
+Manual clamping resort to your own implementation using some of the Blueprint exposed methods of UAttributeSet you can implement or override.
+
+##### Using PreAttributeChange() and PreAttributeBaseChange()
+
+Click on the "Override" dropdown in the functions tab to override the function `PreAttributeBaseChange` in Blueprint.
+
+<Zoom>![](./getting-started/AttributeSets_Clamping_Manual_01.png)</Zoom>
+
+Same for `PreAttributeChange` function.
+
+<Zoom>![](./getting-started/AttributeSets_Clamping_Manual_02.png)</Zoom>
+
+And we'll implement both exactly the same way (you could create an helper function in your Blueprint to handle the clamping, and call that method from both of these places).
+
+<Callout type="default">
+`Switch on Gameplay Attribute` K2 Node is a custom node implemented by the plugin (originally implemented in GAS Companion, and ported over here in Blueprint Attributes). This is one of the few features both plugins share and each implement their own identical version of the node.
+</Callout>
+
+<Zoom>![](./getting-started/AttributeSets_Clamping_Manual_03.png)</Zoom>
+<Zoom>![](./getting-started/AttributeSets_Clamping_Manual_04.png)</Zoom>
+
+
+`In Value` float represents the initial Base or Current value (Base for `PreAttributeBaseChange` method, Current - sometimes also called Final - Value for the `PreAttributeChange`).
+
+Both of these methods must return an `Out Value` float which is going to be new clamped value for the Attributes we care about (here we only deal with the Shield Attribute). For any other attributes that doesn't need clamping, we simply return the initial `In Value`.
+
+##### Using PostGameplayEffectExecute()
+
+When the AttributeSet Blueprint is first created, the event is implemented by default but disabled.
+
+<Zoom>![](./getting-started/AttributeSets_Clamping_Manual_05.png)</Zoom>
+
+In the event the node is missing or you previously deleted it, you can click on the "Override" dropdown again in the functions tab to implement the `PostGameplayEffectExecute` event in Blueprint.
+
+<Zoom>![](./getting-started/AttributeSets_Clamping_Manual_06.png)</Zoom>
+
+As for the implementation, you can implement the clamping using `ClampAttributeValue` helper of `UGBAAttributeSetBlueprintBase` (displayed `Attribute Set Blueprint Base`) parent class.
+
+<Zoom>![](./getting-started/AttributeSets_Clamping_Manual_07.png)</Zoom>
 
 ### Interactions with Gameplay Effects
 
