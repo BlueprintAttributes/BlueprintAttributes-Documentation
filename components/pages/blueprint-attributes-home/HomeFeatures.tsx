@@ -36,7 +36,7 @@ const HOME_FEATURES: Features = [
   },
   {
     name: "Built-in Clamping",
-    description: `Built-in support for clamping via Data Table initialization and handling of "Min Vale" and "Max Value" columns. Or using a special Gameplay Clamped Attribute Data property (child of FGameplayAttributeData) with float or Attribute based clamping.`,
+    description: `Built-in support for clamping via Data Table initialization and handling of "Min Value" and "Max Value" columns. Or using a special Gameplay Clamped Attribute Data property (child of FGameplayAttributeData) with float or Attribute based clamping.`,
     iconDark: FingerprintIconDark,
     iconLight: FingerprintIconLight,
     page: "home",
