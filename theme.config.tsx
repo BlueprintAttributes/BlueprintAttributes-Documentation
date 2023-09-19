@@ -19,7 +19,7 @@ export default {
     const defaultTitle = frontMatter.overrideTitle || section;
 
     return {
-      description: frontMatter.description,
+      description: frontMatter.description || 'Blueprint Attributes: The plugin to make Attribute Sets in Blueprints',
       defaultTitle,
       titleTemplate: `%s – ${section}`,
     };

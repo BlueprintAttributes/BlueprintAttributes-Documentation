@@ -1,0 +1,108 @@
+---
+title: Blueprint Attributes Editor
+---
+
+import Zoom from 'react-medium-image-zoom'
+
+# Blueprint Attributes Editor
+
+Upon first opening, the Blueprint Editor will look like this.
+
+<Zoom>
+![T_BlueprintEditor](./blueprint-attributes-editor/T_BlueprintEditor.png)
+</Zoom>
+
+A few additional buttons can be found in the toolbar, next to the PIE and Debugging controls.
+
+![T_BlueprintEditor_Toolbar](./blueprint-attributes-editor/T_BlueprintEditor_Toolbar.png)
+
+We will go over each of these buttons shortly.
+
+### Creating a new Attribute
+
+#### Add Attribute Button
+
+But first let's click on the "Add Attribute" button.
+
+![T_CreateAttribute_Panel](./blueprint-attributes-editor/T_CreateAttribute_Panel.png)
+
+This combo button brings up a new panel with a form and a few inputs to help with the creation of new Gameplay Attribute properties.
+
+- The type can be either FGameplayAttributeData or FGBAGameplayClampedAttributeData (FGameplayAttributeData with built-in clamping features)
+- The Replication checkbox can be used if the Attribute needs to be replicated, and will generate the appropriate Rep_Notify function and implementation.
+
+![T_CreateAttribute_Panel](./blueprint-attributes-editor/T_CreateAttribute_Panel.gif)
+
+It's a quicker and less error-prone way of creating a new Gameplay Attribute variable, by enforcing proper types and saving a few clicks / manual steps.
+
+You should now have a newly created Gameplay Attribute variable, with type FGameplayAttributeData.
+
+![T_Health_variable_01](./blueprint-attributes-editor/T_Health_variable_01.png)
+
+Along with an "OnRep_Health" function (the rep notify) if you checked the Replication checkbox.
+
+#### Attribute Details
+
+With the Health variable selected, the Detail panel should look like this.
+
+![T_Health_variable_02](./blueprint-attributes-editor/T_Health_variable_02.png)
+
+The important part that is customized by the plugin is the Default Value panel, where you can see the Base and Current value of the Attribute, and change its default value directly from within the Blueprint Editor (courtesy of one of our Details customization class, FGBAGameplayAttributeDataDetails).
+
+#### Rep Notify
+
+if you checked the Replication checbox, a rep notify function should be implemented for you, with the required call to HandleRepNotifyForGameplayAttribute().
+
+![T_Health_variable_03](./blueprint-attributes-editor/T_Health_variable_03.png)
+
+The main role of HandleRepNotifyForGameplayAttribute() is to handle attributes that will be predictively modified by clients, something that is usually done with GAMEPLAYATTRIBUTE_REPNOTIFY helper macro in C++.
+
+### Class Defaults
+
+Now that we have at least one variable created, we can take a look at the Details panel for the Class Defaults (by clicking on this button in the toolbar)
+
+![toolbar_class_defaults](./blueprint-attributes-editor/toolbar_class_defaults.png)
+
+It is adding a new "Add Attribute" button (same function as the one in the toolbar) and listing each and every BP variables. The Gameplay Attribute Data properties are then displayed like here, providing you a simple way to see and tweak all your Attributes at once and their default values.
+
+![T_Health_variable_04](./blueprint-attributes-editor/T_Health_variable_04.png)
+
+Here is an example with an Attribute Set and more Gameplay Attributes.
+
+![T_Health_variable_05](./blueprint-attributes-editor/T_Health_variable_05.png)
+
+#### Details Settings
+
+You can customize that part of the Editor with few Details Customization option in the Project Settings.
+
+Open up the Project Settings, then scroll down to the bottom of the sidebar. You should see a "Blueprint Attributes" section where all the configurable settings for the Plugin can be found.
+
+<Zoom>
+![T_Project_Settings](./blueprint-attributes-editor/T_Project_Settings.png)
+</Zoom>
+
+**Use Compact View**
+
+If you turn on Compact View mode in the Project Settings, Details for Gameplay Attributes Data properties will be simplified and use a simplified display.
+
+![T_Project_Settings_02](./blueprint-attributes-editor/T_Project_Settings_02.png)
+
+For both class defaults variables and when viewing / editing a single Attribute Data property, making the edition of BaseValue possible in the header of the row.
+
+![T_Project_Settings_03](./blueprint-attributes-editor/T_Project_Settings_03.png)
+
+Only for simple Gameplay Attribute Data properties, clamped properties still display using the full extended version (like the Endurance Attribute above, we'll go over Gameplay Clamped Attribute properties in their own section)
+
+**Header Format Text**
+
+The other relevant setting is "Header Format Text".
+
+Customize how the header row is displayed and what should be included. This is a FText::Format format string, with two floats being passed in as an argument (BaseValue and CurrentValue). Both float values are converted to String with "%.2f" to reduce precision to only two decimals (Default Value: `"Base: {0}, Current: {1}"`)
+
+![T_Project_Settings_04](./blueprint-attributes-editor/T_Project_Settings_04.png)
+
+You could even get fancy and use [utf8 emojis](https://quickref.me/emoji.html) in there 😉
+
+![T_Project_Settings_05](./blueprint-attributes-editor/T_Project_Settings_05.png)
+
+![T_Project_Settings_06](./blueprint-attributes-editor/T_Project_Settings_06.png)

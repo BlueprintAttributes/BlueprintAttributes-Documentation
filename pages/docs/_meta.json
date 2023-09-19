@@ -2,18 +2,17 @@
   "index": {
     "title": "Introduction"
   },
-  "project-setup": "Project Setup",
-  "---Getting Started---": {
+  "----": {
     "type": "separator",
     "title": "Getting Started"
   },
-  "getting-started": "Create a Blueprint Attribute Set",
-  "blueprint-attributes-editor": {
-    "title": "Blueprint Attributes Editor",
-    "href": "/docs/getting-started#blueprint-attributes-editor"
-  },
-  "attribute-sets": "Attribute Sets", 
-  "gameplay-effects": "Gameplay Effects", 
+  "project-setup": "Project Setup",
+  "create-blueprint-attribute-set": "Create Blueprint Attribute Set",
+  "blueprint-attributes-editor": "Blueprint Attributes Editor",
+  "attribute-sets": "Attribute Sets",
+  "gameplay-effects": "Gameplay Effects",
+  "attribute-wizard": "Attribute Wizard & Scafold Module",
+  "referencer-handlers": "Referencer Handlers",
   "---Core Concepts---": {
     "type": "separator",
     "title": "Technical Details"
@@ -24,11 +23,16 @@
     "title": ""
   },
   "reference": "API Reference",
+  "resources": "Resources",
   "changelog": {
     "title": "Changelog",
     "href": "https://github.com/BlueprintAttributes/BlueprintAttributes/releases",
     "newWindow": true
   },
   "acknowledgements": "Acknowledgements",
-  "faq": "FAQ"
+  "faq": "FAQ",
+  "nextra": {
+    "type": "page",
+    "display": "hidden"
+  }
 }

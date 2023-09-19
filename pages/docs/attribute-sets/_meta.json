@@ -1,6 +1,8 @@
 {
-  "initializing-attributes": "Initialization",
-  "interactions-with-gameplay-effects": "Interactions with Gameplay Effects",
-  "helper-methods": "Helper Methods",
-  "replication": "Replication"
+  "registering-the-attribute-set-with-the-asc": "",
+  "initialization": "",
+  "built-in-clamping": "",
+  "interactions-with-gameplay-effects": "",
+  "helper-methods": "",
+  "replication": ""
 }
