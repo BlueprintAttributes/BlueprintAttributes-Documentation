@@ -1,5 +1,27 @@
 ---
-description: ''
+description: 'Everything you need to know regarding replication of Blueprint defined Gameplay Attributes'
 ---
 
+import Zoom from 'react-medium-image-zoom'
+
 # Replication
+
+For multiplayer projects, you can replicate your Gameplay Attribute defined in Blueprints similar to how you would replicate any other property.
+
+## GetLifetimeReplicatedProps
+
+`GetLifetimeReplicatedProps()` is implemented in `UGBAAttributeSetBlueprintBase (Attribute Set Blueprint Base)`, the UAttributeSet runtime class Blueprint AttributeSet are inheriting from.
+
+It's using the same pattern as Actor Replication or Actor Components, which is going through `UBlueprintGeneratedClass::GetLifetimeBlueprintReplicationList()` to collects all FProperties (Blueprint variables) that are marked for replication.
+
+## Rep Notififies
+
+Using rep notifies, you can handle attributes that will be predictively modified by clients. In Blueprints, that means using `RepNotify` for the replication option and calling `HandleRepNotifyForGameplayAttribute()` within the corresponding RepNotify function implementation.
+
+*Make sure you're using RepNotify for the Replication option*
+<Zoom>
+![](./replication/AttributeSets_Replication_01.png)
+</Zoom>
+
+
+(Blueprint equivalent of C++ GAMEPLAYATTRIBUTE_REPNOTIFY helper macro).
