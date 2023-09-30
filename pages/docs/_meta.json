@@ -13,23 +13,22 @@
   "gameplay-effects": "Gameplay Effects",
   "attribute-wizard": "Attribute Wizard & Scafold Module",
   "referencer-handlers": "Referencer Handlers",
-  "---Core Concepts---": {
+  "---Technical Details---": {
     "type": "separator",
     "title": "Technical Details"
   },
-  "core-concepts": "Core Concepts",
+  "reference": "API Reference",
+  "resources": "Resources",
   "---": {
     "type": "separator",
     "title": ""
   },
-  "reference": "API Reference",
-  "resources": "Resources",
+  "acknowledgements": "Acknowledgements",
   "changelog": {
     "title": "Changelog",
     "href": "https://github.com/BlueprintAttributes/BlueprintAttributes/releases",
     "newWindow": true
   },
-  "acknowledgements": "Acknowledgements",
   "faq": "FAQ",
   "nextra": {
     "type": "page",
