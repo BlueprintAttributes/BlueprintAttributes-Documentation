@@ -17,7 +17,11 @@
     "type": "separator",
     "title": "Technical Details"
   },
-  "reference": "API Reference",
+  "api-reference": {
+    "title": "API Reference",
+    "href": "/api/docs+faca135f.html",
+    "newWindow": true
+  },
   "resources": "Resources",
   "---": {
     "type": "separator",
