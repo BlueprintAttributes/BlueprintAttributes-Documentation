@@ -1,5 +1,37 @@
 ---
-description:
+description: This document aims to go through the few subtle differences and settings related to Gameplay Effects details customizations.
 ---
 
+import Zoom from 'react-medium-image-zoom'
+import { Callout } from 'nextra/components'
+
+
 # Gameplay Effects
+
+Gameplay Effects don't change (much). They still function the same with Blueprint Attributes plugin. This document aims to go through the few subtle differences and settings related to Gameplay Effects details customizations.
+
+## Gameplay Attribute Dropdown
+
+The dropdown available in the Modifiers array, or anywhere else a FGameplayAttribute property appear, is strictly identical to the engine default customization.
+
+The main difference consists of allowing the display of FGameplayAttribute FProperties defined in the Blueprints, along the standard ones defined in C++, within the Attribute picker dropdown.
+
+### Blueprint and C++ Attributes
+
+*All `GBA_` prefixed Attribute Sets are Blueprints with FGameplayAttributeData properties.*
+<Zoom>
+![](./gameplay-effects/ge_01.png)
+</Zoom>
+
+### Gain focus on filter search box
+
+The other subtle difference is related to gaining focus immediately on the search box upon opening the combo box for the Attribute Picker.
+
+<Callout type="info">
+This is now a default behavior in 5.3, but this wasn't the case in previous engine versions.
+</Callout>
+
+*You can immediately start typing to filter attributes when the attribute combo box is opened.*
+<Zoom>
+![](./gameplay-effects/ge_02.gif)
+</Zoom>
