@@ -4,6 +4,7 @@ description: This document aims to go through the few subtle differences and set
 
 import Zoom from 'react-medium-image-zoom'
 import { Callout } from 'nextra/components'
+import { Video } from '../../components/docs/Video'
 
 
 # Gameplay Effects
@@ -35,3 +36,31 @@ This is now a default behavior in 5.3, but this wasn't the case in previous engi
 <Zoom>
 ![](./gameplay-effects/ge_02.gif)
 </Zoom>
+
+### Filter Attributes
+
+Blueprint Attributes plugin provides the option to setup Attribute Filters in the Project Settings. It will allow you to hide and prevent specific Attributes from showing up in the Gameplay Attribute Picker.
+
+Open up the Project Settings, and scroll down the left sidebar all the way down, until you see the "Blueprint Attributes" section, just below "Plugins".
+
+You can then expand the `Details Customization > Attributes` category to find the `Filter Out Attributes in Details View` setting.
+
+<Zoom>
+![](./gameplay-effects/ge_filter_attributes_01.png)
+</Zoom>
+
+This is a simple list of FStrings, allowing you to define a list of gameplay attributes to ignore in attributes picker widget.
+	 
+Allows you to filter out a list of gameplay attributes from Attribute Sets in Gameplay Effects Blueprint or any Blueprint nodes listing them (such as `GetFloatAttribute()`)
+	 
+It can be useful if your project is never using pre-defined Attributes (such as AbilitySystemComponent.OutgoingDuration / IncomingDuration), or plugins (such as GAS Companion GSCAttributeSet).
+	 
+This is a StartsWith search pattern, meaning any value here should be the beginning of an attribute (or set) we'd like to ignore, for example:
+	 
+- AbilitySystemComponent
+- AbilitySystemComponent.OutgoingDuration
+- AbilitySystemComponent.IncomingDuration
+- GSCAttributeSet
+- GSCAttributeSet.Mana
+
+<Video src="/videos/ge_filter_attributes_02.mp4" />
