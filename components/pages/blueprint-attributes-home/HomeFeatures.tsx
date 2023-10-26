@@ -1,23 +1,11 @@
 import { FadeIn } from "../home-shared/FadeIn";
 import { FeaturesBento } from "../home-shared/FeaturesBento";
-import type Image from "next/image";
 
 import RefreshIconDark from "../../../public/images/docs/shared/feature-icons/refresh-dark.svg";
 import RefreshIconLight from "../../../public/images/docs/shared/feature-icons/refresh-light.svg";
 import FingerprintIconDark from "../../../public/images/docs/shared/feature-icons/fingerprint-dark.svg";
 import FingerprintIconLight from "../../../public/images/docs/shared/feature-icons/fingerprint-light.svg";
-
-type NextImageSrc = Parameters<typeof Image>[0]["src"];
-
-export type Feature = {
-  name: string;
-  description: string;
-  iconDark: NextImageSrc;
-  iconLight: NextImageSrc;
-  page: "all" | "home" | "docs";
-};
-
-export type Features = Array<Feature>;
+import { Features } from "../../../content/features";
 
 const HOME_FEATURES: Features = [
   {
