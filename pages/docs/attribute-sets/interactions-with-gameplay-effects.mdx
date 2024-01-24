@@ -90,8 +90,8 @@ Called just after any modification happens to an attribute.
 | Name            | Type                        | Description |
 | :-----          | :----                       | :----       |
 | InAttribute     | const FGameplayAttribute&   | The Gameplay Attribute whose value has been changed |
-| InValue         | float                       | Original value for the Gameplay Attribute, before PreAttributeChange event and actual modification happened |
-| OutValue        | float                       | New value for the Gameplay Attribute, after PreAttributeChange event and modification happened |
+| OldValue        | float                       | Original value for the Gameplay Attribute, before PreAttributeChange event and actual modification happened |
+| NewValue        | float                       | New value for the Gameplay Attribute, after PreAttributeChange event and modification happened |
 
 ### PostAttributeBaseChange
 
@@ -106,7 +106,7 @@ Called just after any modification happens to an attribute's base value right an
 | Name            | Type                        | Description |
 | :-----          | :----                       | :----       |
 | InAttribute     | const FGameplayAttribute&   | The Gameplay Attribute whose base value has been changed |
-| OldValue        | float                      | Original value for the Gameplay Attribute, before PreAttributeBaseChange event and actual modification happened |
+| OldValue        | float                       | Original value for the Gameplay Attribute, before PreAttributeBaseChange event and actual modification happened |
 | NewValue        | float                       | New value for the Gameplay Attribute, after PreAttributeBaseChange event and modification |
 
 ## PreGameplayEffectExecute
