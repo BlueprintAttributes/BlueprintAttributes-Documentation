@@ -126,7 +126,7 @@ Returns the Owner's Ability System Component cached data about the owning actor 
 You'll get an Error if we were unable to get back the ActorInfo cached pointer, and result will be a default `FGameplayAbilityActorInfo` with none of its member properly populated.
 </Callout>
 
-## HandleRepNotifyForGameplayAttribute()
+## HandleRepNotifyForGameplayAttributeData()
 
 <Zoom>![](./helper-methods/AttributeSets_HelperMethods_08.png)</Zoom>
 
@@ -144,4 +144,28 @@ Meant to provide the same prediction capabilities of GAMEPLAYATTRIBUTE_REPNOTIFY
 
 | Name              | Type   | Description                                                |
 | :-----            | :----  | :----                                                      |
-| InPropertyName    | FName  | Attribute Name - must match the rep notify attribute name  |
+| InAttribute    | const FGameplayAttributeData&  | Attribute Name - must match the rep notify attribute name  |
+
+## HandleRepNotifyForGameplayClampedAttributeData()
+
+<Zoom>![](./helper-methods/AttributeSets_HelperMethods_09.png)</Zoom>
+
+<Callout type="warning">
+This method is meant to be used in the context of a RepNotify Blueprint implementation for an Attribute.
+</Callout>
+
+<Callout type="info">
+This is exactly the same as method as [HandleRepNotifyForGameplayAttributeData()](#handlerepnotifyforgameplayattributedata) above but taking a `FGBAGameplayClampedAttributeData` input parameter instead.
+</Callout>
+
+**Method description**
+
+To be called from Blueprint rep notifies for a given Gameplay Attribute Data member variable.
+
+Meant to provide the same prediction capabilities of GAMEPLAYATTRIBUTE_REPNOTIFY(UMyAttributeSet, Attribute, OldAttribute) macro that is usually called from within a C++ AttributeSet rep notify handler.
+
+**Parameters**
+
+| Name              | Type   | Description                                                |
+| :-----            | :----  | :----                                                      |
+| InAttribute    | const FGBAGameplayClampedAttributeData&  | Attribute Name - must match the rep notify attribute name  |
