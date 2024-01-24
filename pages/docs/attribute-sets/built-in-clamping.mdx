@@ -12,9 +12,9 @@ Clamping of Attribute, to ensure that their values are always within the limits 
 
 You can perform Attributes clamping with one of three methods, two of which are the built-in clamping features coming with the plugin.
 
-**[with DataTable](#with-datatable)*- To initialize the Attributes, and using the MinValue and MaxValue columns. The Attribute Set Blueprint Base class is able to handle those Min/Max column values, and execute a built-in clamping behavior. 
-**[with Gameplay Clamped Attribute Data properties](#with-gameplay-clamped-attribute-data-properties)*- A customizable clamping using a special Gameplay Clamped Attribute Data property (a child of FGameplayAttributeData) with float or Attribute-based clamping.
-**[Manual Clamping](#manual-clamping)*- You'd implement the clamping behavior yourself, with your own rules with the BP exposed method / events of Attribute Sets (PreAttributeChange(), PreAttributeBaseChange() or PostGameplayEffectExecute())
+* **[with DataTable](#with-datatable)** - To initialize the Attributes, and using the MinValue and MaxValue columns. The Attribute Set Blueprint Base class is able to handle those Min/Max column values, and execute a built-in clamping behavior. 
+* **[with Gameplay Clamped Attribute Data properties](#with-gameplay-clamped-attribute-data-properties)** - A customizable clamping using a special Gameplay Clamped Attribute Data property (a child of FGameplayAttributeData) with float or Attribute-based clamping.
+* **[Manual Clamping](#manual-clamping)** - You'd implement the clamping behavior yourself, with your own rules with the BP exposed method / events of Attribute Sets (PreAttributeChange(), PreAttributeBaseChange() or PostGameplayEffectExecute())
 
 `UGBAAttributeSetBlueprintBase::PostGameplayEffectExecute()` is the method responsible of clamping, and the order for those is the following:
 
