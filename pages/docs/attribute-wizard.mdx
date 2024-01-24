@@ -112,7 +112,7 @@ In this case, a `Public` class type will generate the `MODULENAME_API` dll expor
 ![](./attribute-wizard/attribute_wizard_class_type_01.gif)
 </Zoom>
 
-If we switch the preview to Source, the other part that changes depending on CLass Type is the include path for the header, if we have a relative sub path.
+If we switch the preview to Source, the other part that changes depending on Class Type is the include path for the header, if we have a relative sub path.
 
 <Zoom>
 ![](./attribute-wizard/attribute_wizard_class_type_02.gif)
@@ -156,7 +156,7 @@ It'll change the Header and Source file paths on selection (and is directly rela
 ![](./attribute-wizard/attribute_wizard_relativepath_01.png)
 </Zoom>
 
-You can click the little <FolderIcon height="16px" width="16px" className="inline" /> next to the text box to open the OS Directory Dialog and pick a different location (must be within the target module source path).
+You can click the little <FolderIcon height="16px" width="16px" className="inline" /> icon next to the text box to open the OS Directory Dialog and pick a different location (must be within the target module source path).
 
 ### Header / Source files
 
@@ -193,3 +193,11 @@ Those settings are the same as `Blueprint Attributes > Scaffold Preview Settings
 <Video src="/videos/attribute_wizard_02.mp4">
 Upon clicking the "Create Class" button.
 </Video>
+
+## Credits
+
+The slate widgets responsible for source and header preview is directly inspired and based off the [Blueprint Header View](https://docs.unrealengine.com/5.3/en-US/an-overview-of-the-blueprint-header-view-in-unreal-engine/) feature and module that was introduced in 5.1.
+
+The very first time I've seen this feature in action in the editor kind of surprised me (in a very nice way), and I immediately thought about how it could be to used to have this kind of source preview in a C++ Class generator.
+
+So all the credits goes towards Epic for introducing such a nice feature, whose [BlueprintHeaderView plugin and module](https://github.com/EpicGames/UnrealEngine/tree/5.3/Engine/Plugins/Editor/BlueprintHeaderView) is the original instigator and author of technical details for implementing something like this.
