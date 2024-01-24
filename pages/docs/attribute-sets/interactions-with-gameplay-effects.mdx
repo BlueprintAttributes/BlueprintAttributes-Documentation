@@ -136,13 +136,13 @@ Since the default behavior for the editor is to implement the method with return
 | Name            | Type                                  | Description                                               |
 | :-----          | :----                                 | :----                                                     |
 | InAttribute     | const FGameplayAttribute&             | The Gameplay Attribute whose base value has been changed  |
-| InData          | [const FGBAAttributeSetExecutionData&](#related-struct-fgbaattributesetexecutiondata)  | Payload with information extracted from FGameplayEffectModCallbackData, the Source / Target actor, Ability System Component, Controllers, Effect Context, Specs and Source Tags, Magnitude and Delta values, etc. |
+| InData          | [const FGBAAttributeSetExecutionData&](#struct-fgbaattributesetexecutiondata)  | Payload with information extracted from FGameplayEffectModCallbackData, the Source / Target actor, Ability System Component, Controllers, Effect Context, Specs and Source Tags, Magnitude and Delta values, etc. |
 
 **Return value**
 
 Return true to continue, or false to throw out the modification.
 
-#### PostGameplayEffectExecute
+## PostGameplayEffectExecute
 
 <Zoom>![](./interactions-with-gameplay-effects/AttributeSets_InteractGameplayEffect_06.png)</Zoom>
 
