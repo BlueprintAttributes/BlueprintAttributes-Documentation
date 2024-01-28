@@ -4,11 +4,14 @@ import { HeroText, SectionSubtext } from "../home-shared/Headings";
 import { Gradient } from "../home-shared/Gradient";
 import { FadeIn } from "../home-shared/FadeIn";
 import { CTAButton } from "../home-shared/CTAButton";
-import RepoLogo from "../../logos/RepoLogo";
 import { useConfig } from "nextra-theme-docs";
 
 export function HomeHero() {
   const config = useConfig();
+
+  const gradientColorProps = {
+    blue: true,
+  };
 
   return (
     <>
@@ -23,25 +26,25 @@ export function HomeHero() {
               small
               width={120}
               height={120}
-              blue
               className="dark:opacity-100 opacity-40"
+              {...gradientColorProps}
             />
           </div>
 
-          <div className="w-[120px] h-[120px] z-50">
+          <div className="z-50">
             <Image
               alt=""
-              src={`/img/sunglasses-dark.svg`}
-              width={120}
-              height={120}
+              src={`/img/Logo-White-Transparent.png`}
+              width={256}
+              height={256}
               className="hidden dark:block"
             />
 
             <Image
               alt=""
-              src={`/img/sunglasses-light.svg`}
-              width={120}
-              height={120}
+              src={`/img/Logo-Black-Transparent.png`}
+              width={256}
+              height={256}
               className="block dark:hidden"
             />
           </div>
@@ -50,18 +53,18 @@ export function HomeHero() {
           width={1000}
           height={1000}
           className="top-[-500px] dark:opacity-20 opacity-[0.15]"
-          blue
+          {...gradientColorProps}
         />
         <div className="absolute top-0 z-10 w-full h-48 dark:from-black from-white to-transparent bg-gradient-to-b" />
         <FadeIn
           delay={0.15}
-          className="z-50 flex flex-col items-center justify-center gap-5 px-6 text-center lg:gap-6"
+          className="z-50 flex flex-col items-center justify-center gap-5 px-6 text-center lg:gap-6 -mt-10"
         >
-          <RepoLogo
+          {/* <RepoLogo
             alt="BlueprintAttributes"
             width="200"
             className="w-[160px] md:w-[200px] fill-black dark:fill-white"
-          />
+          /> */}
           <HeroText h1>Make Attribute Sets in Blueprints</HeroText>
           <SectionSubtext hero>
             Blueprint Attributes is an extension to GAS (Gameplay Ability System) plugin that makes UAttributeSet fully Blueprintable.

@@ -79,6 +79,10 @@
   );
 }
 
+.glowGreen {
+  background: linear-gradient(180deg, #bada55 0%, #bfd479 100%);
+}
+
 .glowGray {
   background: rgba(255, 255, 255, 0.15);
 }
