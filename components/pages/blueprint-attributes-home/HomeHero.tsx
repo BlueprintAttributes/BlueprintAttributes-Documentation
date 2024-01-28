@@ -17,7 +17,7 @@ export function HomeHero() {
     <>
       <FadeIn
         noVertical
-        className="font-sans w-auto pb-16 pt-[48px] md:pb-24 lg:pb-32 md:pt-16 lg:pt-20 flex justify-between gap-8 items-center flex-col relative z-0"
+        className="font-sans w-auto pb-16 md:pb-24 lg:pb-32 flex justify-between gap-8 items-center flex-col relative z-0"
       >
         <FadeIn className="z-50 flex items-center justify-center w-full ">
 
@@ -31,20 +31,20 @@ export function HomeHero() {
             />
           </div>
 
-          <div className="z-50">
+          <div className="z-50 -mt-10">
             <Image
               alt=""
               src={`/img/Logo-White-Transparent.png`}
-              width={256}
-              height={256}
+              width={512}
+              height={512}
               className="hidden dark:block"
             />
 
             <Image
               alt=""
               src={`/img/Logo-Black-Transparent.png`}
-              width={256}
-              height={256}
+              width={512}
+              height={512}
               className="block dark:hidden"
             />
           </div>
@@ -58,7 +58,7 @@ export function HomeHero() {
         <div className="absolute top-0 z-10 w-full h-48 dark:from-black from-white to-transparent bg-gradient-to-b" />
         <FadeIn
           delay={0.15}
-          className="z-50 flex flex-col items-center justify-center gap-5 px-6 text-center lg:gap-6 -mt-10"
+          className="z-50 flex flex-col items-center justify-center gap-5 px-6 text-center lg:gap-6 -mt-20"
         >
           {/* <RepoLogo
             alt="BlueprintAttributes"
