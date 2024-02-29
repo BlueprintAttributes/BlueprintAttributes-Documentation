@@ -13,6 +13,13 @@
   "gameplay-effects": "Gameplay Effects",
   "attribute-wizard": "Attribute Wizard & Scaffold Module",
   "referencer-handlers": "Referencer Handlers",
+  "----adv": {
+    "type": "separator",
+    "title": "Advanced"
+  },
+  "mmc": "Modifier Magnitude Calculation",
+  "exec-calc": "Gameplay Effect Execution Calculation",
+  "save-game": "Saving and Loading Attributes",
   "---Technical Details---": {
     "type": "separator",
     "title": "Technical Details"
