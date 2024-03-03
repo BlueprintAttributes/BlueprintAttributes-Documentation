@@ -57,7 +57,10 @@ Click the C++ tab below for Attributes defined in native.
 
   In the details panel, click the "Advanced" category, and enable the `SaveGame` flag by turning on the checkbox.
 
+<Zoom>
   ![](./save-game/20240303193714.png)
+</Zoom>
+
   </Tabs.Tab>
 
   <Tabs.Tab>
@@ -112,10 +115,13 @@ for (UAttributeSet* AttributeSet : AttributeSets)
 
 ### 4. On Loading
 
-![](./save-game/20240303194402.png)
+Call the same `SerializeAbilitySystemComponent()` but this time with `bIsSaving` parameter to false, passing down the relevant Ability System Component (that holds the AttributeSets to restore) and the array of Bytes from save game where binary data was stored.
 
+You don't need to manually handle setting the Attribute values, this is done in `SerializeAbilitySystemComponent()` automatically by reading back the stored value from the Archive (with `bIsSaving` to false).
+
+<Zoom>
 ![](./save-game/20240303194411.png)
-
+</Zoom>
 
 ### Summary
 
