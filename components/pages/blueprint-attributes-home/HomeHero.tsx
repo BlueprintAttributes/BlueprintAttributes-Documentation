@@ -65,9 +65,9 @@ export function HomeHero() {
             width="200"
             className="w-[160px] md:w-[200px] fill-black dark:fill-white"
           /> */}
-          <HeroText h1>Make Attribute Sets in Blueprints</HeroText>
+          <HeroText h1>Attribute Sets in Blueprints</HeroText>
           <SectionSubtext hero>
-            Blueprint Attributes is an extension to GAS (Gameplay Ability System) plugin that makes UAttributeSet fully Blueprintable.
+            Blueprint Attributes is a plugin extension for GAS (Gameplay Ability System), fully exposing Gameplay Attributes and Attribute Sets to Blueprints.
           </SectionSubtext>
         </FadeIn>
         <FadeIn
