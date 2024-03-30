@@ -52,7 +52,9 @@ export default {
   },
 
   head: () => {
+    const { frontMatter } = useConfig();
     const metaImage = `${BASE_URL}/banner.png`;
+    const description = frontMatter.description || 'Blueprint Attributes: A plugin extension for GAS, fully exposing Attribute Sets and Gameplay Attributes to Blueprints';
 
     return (
       <>
@@ -61,6 +63,7 @@ export default {
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="manifest" href="/site.webmanifest" />
 
+        <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={metaImage} />
         <meta name="twitter:image:src" content={metaImage} />
         <meta name="twitter:image:alt" content="Banner" />
