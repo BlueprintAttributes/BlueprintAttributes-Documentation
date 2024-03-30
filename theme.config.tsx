@@ -1,6 +1,7 @@
 import { DiscordIcon } from "nextra/icons";
 import { useConfig } from "nextra-theme-docs";
 import Image from "next/image";
+import { useRouter } from 'next/router'
 
 export default {
   darkMode: true,
@@ -11,29 +12,76 @@ export default {
 
   primaryHue: 204,
 
-  docsRepositoryBase: 'https://github.com/BlueprintAttributes/BlueprintAttributes-Documentation',
+  docsRepositoryBase: 'https://github.com/BlueprintAttributes/BlueprintAttributesDocumentation',
 
   useNextSeoProps: function SEO() {
+    const { asPath, defaultLocale, locale } = useRouter();
     const { frontMatter } = useConfig();
 
-    let section = "Blueprint Attributes";
+    const section = "Blueprint Attributes";
     const defaultTitle = frontMatter.overrideTitle || section;
+    const description = frontMatter.description || 'Blueprint Attributes: A plugin extension for GAS, fully exposing Attribute Sets and Gameplay Attributes to Blueprints';
+    const baseUrl = `https://blueprintattributes.github.io`;
+    const url = baseUrl + (defaultLocale === locale ? asPath : `/${locale}${asPath}`);
 
     return {
-      description: frontMatter.description || 'Blueprint Attributes: The plugin to make Attribute Sets in Blueprints',
+      description,
       defaultTitle,
       titleTemplate: `%s – ${section}`,
+      openGraph: {
+        type: 'website',
+        locale: 'en',
+        description,
+        url,
+        images: [
+          {
+            url: `${baseUrl}/banner.png`,
+            width: 1200,
+            height: 630,
+            alt: 'Banner',
+          }
+        ]
+      }
     };
   },
 
-  head: (
-    <>""
-      <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-      <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-      <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-      <link rel="manifest" href="/site.webmanifest" />
-    </>
-  ),
+  head: () => {
+    const { asPath, defaultLocale, locale } = useRouter();
+    const { frontMatter } = useConfig();
+    const url = 'https://blueprintattributes.github.io' + (defaultLocale === locale ? asPath : `/${locale}${asPath}`);
+
+    return (
+      <>
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+
+        {/* <meta property="og:url" content={url} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:locale" content={siteLanguage} />
+        <meta property="og:site_name" content={siteTitle} />
+        <meta property="og:image" content={metaImage} />
+        <meta property="og:image:secure_url" content={metaImage} />
+        <meta property="og:image:alt" content="Banner" />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={metaTitle} />
+        <meta name="twitter:site" content={siteAuthor} />
+        <meta name="twitter:creator" content={siteAuthor} />
+        <meta name="twitter:image" content={metaImage} />
+        <meta name="twitter:image:src" content={metaImage} />
+        <meta name="twitter:image:alt" content="Banner" />
+        <meta name="twitter:image:width" content="1200" />
+        <meta name="twitter:image:height" content="630" /> */}
+      </>
+    )
+  },
 
   logo: (
     <>
