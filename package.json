@@ -7,7 +7,8 @@
     "dev": "next dev",
     "build": "next build",
     "export": "next build && shx touch out/.nojekyll",
-    "start": "next start"
+    "start": "next start",
+    "changelog": "./changelog-from-release/linux/changelog-from-release -l 2 | sed -r \"s/^<!--.+$//g\" | sed -r \"s/^<a name.+$//g\" | sed -r \"s/## What's Changed/**What's Changed**/g\" | sed -r \"s/### Other Changes/\\n*Other Changes*/g\" | sed -r \"s/### Bug Fixes/\\n*Bug Fixes*/g\" | sed -r \"s/^\\[Changes\\].+$//g\" | sed \"s/by \\[@mklabs\\](https:\\/\\/github.com\\/mklabs)/ /g\" >> pages/docs/changelog.mdx"
   },
   "keywords": [],
   "author": "",

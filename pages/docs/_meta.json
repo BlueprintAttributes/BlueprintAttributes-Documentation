@@ -35,12 +35,7 @@
     "title": ""
   },
   "acknowledgements": "Acknowledgements",
-  "changelog": {
-    "title": "Changelog",
-    "href": "https://github.com/BlueprintAttributes/BlueprintAttributes/releases",
-    "newWindow": true
-  },
-  "faq": "FAQ",
+  "changelog": "Changelog",
   "nextra": {
     "type": "page",
     "display": "hidden"

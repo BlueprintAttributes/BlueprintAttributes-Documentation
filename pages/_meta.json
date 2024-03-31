@@ -10,7 +10,11 @@
   },
   "docs": {
     "title": "Docs",
+    "type": "page"
+  },
+  "changelog": {
+    "title": "Changelog",
     "type": "page",
-    "display": "children"
+    "href": "/docs/changelog"
   }
 }
