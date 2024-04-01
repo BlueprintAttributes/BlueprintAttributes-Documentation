@@ -9,9 +9,42 @@ import { Callout } from 'nextra/components'
 
 Once you create an Attribute Set with one or more Gameplay Attributes, we need to register (or grant) it to the appropriate Ability System Component.
 
+## Adding the ASC (Ability System Component)
+
 <Callout type="info">
-You can refer to [Register Attribute Sets with the ASC](/docs/project-setup#register-attribute-sets-with-the-asc) for more options.
+Adding the ASC to your Actors is usually done in C++ (and before engine 5.0, it was mandatory). For example in Lyra or using GAS Companion, you'd have this component created for you already. For the purpose of these instructions, we simply add the component in Blueprint and you can freely skip this step if this is applicable to you.
 </Callout>
+
+Add the actor component "Ability System" to your Character Blueprint, rename it to AbilitySystemComponent for good measure.
+
+*In the components panel, click the "Add" button and search for "AbilitySystem".*
+![T_Project_Setup_03](../project-setup/T_Project_Setup_03.png)
+
+*Rename the component to "AbilitySystemComponent" (optional, but it'll keep it consistent as if it was added in C++)*
+![T_Project_Setup_04](../project-setup/T_Project_Setup_04.png)
+
+## Register Attribute Sets with the ASC
+
+In the next sections, we are going to create Attribute Sets (in Blueprint!).
+
+<Callout type="info">
+The prefix used here for Blueprint Attribute Sets will be "GBA_", standing for Gameplay Blueprint Attributes. But you are free to choose the prefix for your project and name them as you please.
+</Callout>
+
+You will eventually have to register the Attribute Sets with the appropriate ASC for these Attributes to appear and have an impact in-game. You can do so with either:
+
+1. OnBeginPlay and using the InitStats() method on the ASC (this is engine API)
+![T_Project_Setup_05](../project-setup/T_Project_Setup_05.png)
+
+2. You can also add the Attribute Set type to the ASC's Default Starting Data (in the details panel with ASC selected, again engine API). Keep in mind that for it to work, you need to provide both the Attribute Set type **and** a DefaultStartingTable DataTable (even if the latter is empty). This is the current engine implementation skipping initialization if the DataTable is not provided.
+![T_Project_Setup_06](../project-setup/T_Project_Setup_06.png)
+*Details panel with Ability System Component selected in the Blueprint Editor*
+
+3.  A third method depends on your usual GAS backend. Be it Lyra / GAS Companion or you own implementation, they each have their own way of providing a list of Attributes to grant (conceptually similar to DefaultStartingData in 2.)
+    1. With GAS Companion, you can for instance use the Granted Attributes array on the ASC or an Ability Set. In Lyra, you'll likely register Attribute Sets via a PawnData and an AbilitySet DataAsset.
+    ![T_Project_Setup_07](../project-setup/T_Project_Setup_07.png)
+    2. Or even,  if you use Game Features, via a GameFeature action (in GAS Companion or Lyra) and the Attributes list they both provide.
+    ![T_Project_Setup_08](../project-setup/T_Project_Setup_08.png)
 
 Here, we'll use the `InitStats()` engine method, as part of the ASC API, to grant the Attribute Set on Begin Play.
 
