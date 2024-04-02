@@ -6,6 +6,16 @@ import { Callout } from 'nextra/components'
 
 There is an Editor Subsystem defined by Blueprint Attributes plugin whose role is to take care of Attribute properties renames in Blueprints. This system is called internally "Referencer Handlers".
 
+- Detects Attribute renaming in the Blueprint Editor.
+- Replace previous references to the renamed Attribute in Gameplay Effects.
+- Displays a list of modified properties and Blueprint nodes (K2Nodes) in the message log with clickable links for easy navigation to the referencers.
+
+---
+
 <Callout type="default">
 This page is a work in progress.
 </Callout>
+
+---
+
+{/* Note: Since 5.3, Attributes are Asset Registry searchable, meaning Reference Viewer can be used to see their referencers (like Gameplay Tags). */}
