@@ -16,7 +16,7 @@ For multiplayer projects, you can replicate your Gameplay Attribute defined in B
 
 It's using the same pattern as Actor Replication or Actor Components, which is going through `UBlueprintGeneratedClass::GetLifetimeBlueprintReplicationList()` to collects all FProperties (Blueprint variables) that are marked for replication.
 
-## Rep Notififies
+## Rep Notifies
 
 Using rep notifies, you can handle attributes that will be predictively modified by clients. In Blueprints, that means using `RepNotify` for the replication option and calling `HandleRepNotifyForGameplayAttributeData()` within the corresponding RepNotify function implementation.
 
