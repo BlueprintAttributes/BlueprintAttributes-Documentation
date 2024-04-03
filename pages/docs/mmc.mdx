@@ -55,10 +55,19 @@ For engine prior to 5.3, you'll need to rely on a workaround for the issue of co
 </Callout>
 
 <Zoom>
-![](./mmc/20240229004841.png)
+![](./mmc/20240403202055.png)
 </Zoom>
 
 By wiring in a pure const method that returns a reference to self for any BP exposed methods of MMC (like GetCapturedAttributeMagnitude)
+
+<Callout type="warning">
+**Very important** Make sure you name the return parameter something else than `Self` or `self`.
+
+<Zoom>
+*OK on the left, NOK on the right.*
+![](./mmc/20240403201031.png)
+</Zoom>
+</Callout>
 
 <Zoom>
 ![](./mmc/20240229004919.png)
