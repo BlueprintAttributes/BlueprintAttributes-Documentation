@@ -35,7 +35,13 @@
     "title": ""
   },
   "acknowledgements": "Acknowledgements",
-  "changelog": "Changelog",
+  "changelog": {
+    "display": "hidden"
+  },
+  "Changelog": {
+    "title": "Changelog",
+    "href": "/docs/changelog"
+  },
   "nextra": {
     "type": "page",
     "display": "hidden"
