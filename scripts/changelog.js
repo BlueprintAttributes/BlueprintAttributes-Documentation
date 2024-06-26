@@ -13,6 +13,7 @@ import remarkGfm from 'remark-gfm';
 import remarkGithub from 'remark-github';
 import { format } from 'date-fns';
 import { mkdirp } from 'mkdirp';
+import semver from 'semver';
 
 const token = process.env.GITHUB_TOKEN;
 const user = `BlueprintAttributes`;
@@ -31,16 +32,19 @@ const args = arg({
   '--output': (value, argName, previousValue) => {
     return path.resolve(value);
   },
+  '--tag': String,
 
   // Aliases
   '-v': '--version',
   '--out': '--output',
   '-o': '--output',
+  '-t': '--tag'
 });
 
 console.log('arg', args);
 
-const output = args['--output'] || path.resolve('pages/docs/changelog.mdx');
+const output = args['--output'] || path.resolve('pages/docs/changelog.md');
+const sinceTag = args['--tag'];
 
 console.log(`Using token "${token}" to fetch release note`);
 console.log(`Using output "${output}" to generate release note`);
@@ -76,17 +80,21 @@ const remarkTransformPullRequest = () => {
       // Links
       // Gather the list of Pull Requests links, and replace with local URLs to generated .md
       if (node.type === 'link') {
-        const reg = new RegExp(`https://github.com/${user}/${repo}/(pull|issues)/(\\d+)$`);
+        // const reg = new RegExp(`https://github.com/${user}/${repo}/(pull|issues)/(\\d+)$`);
+        const reg = new RegExp(`https://github.com/${user}/${repo}/(pull)/(\\d+)$`);
         const match = node.url.match(reg);
 
         if (match) {
-          // node.url = `../../pull/${match[2]}`;
-          node.url = `/changelog/pull/${match[2]}`;
+          console.log('MAAAAAAAAAAATCH')
+          node.url = `/docs/changelog/pull/${match[2]}`;
           if (node.children && node.children[0]) {
             node.children[0].value = `#${match[2]}`;
           }
 
           return;
+        }
+        else {
+
         }
       }
     });
@@ -149,7 +157,7 @@ const remarkTransformReleaseNote = (pullRequestLinks) => {
               api: `repos/${user}/${repo}/pulls/${match[2]}`
             });
 
-            node.url = `./pull/${match[2]}`;
+            node.url = `changelog/pull/${match[2]}`;
             if (node.children && node.children[0]) {
               node.children[0].value = `#${match[2]}`;
             }
@@ -239,18 +247,12 @@ const getPullRequestContent = async (tag, result) => {
     .use(remarkStringify)
     .process(body || '');
 
-  const promises = imagesToDownload.map(image => fetchImage(image, path.join(path.dirname(output), `pull/${number}`)));
+  const promises = imagesToDownload.map(image => fetchImage(image, path.join(path.dirname(output), `changelog/pull/${number}`)));
   Promise.all(promises).catch(console.error);
 
   return `---
 title: "Pull Request #${number}"
 description: "${title}"
-eleventyNavigation:
-  parent: Changelog
-  key: Changelog_PR_${number}
-  title: "${tag} - PR #${number}"
-  excerpt: "${title}"
-layout: layouts/markdown
 ---
 
 *[on ${format(new Date(created_at), 'PPP')}](${html_url})*
@@ -277,7 +279,7 @@ const generateForTag = async (tag, tags = []) => {
   for (const link of pullRequestLinks) {
     const result = await fetchPullRequest(link);
     const { number } = result.body;
-    const dirname = path.join(path.dirname(output), `pull/${number}`);
+    const dirname = path.join(path.dirname(output), `changelog/pull/${number}`);
     await mkdirp(dirname);
     console.log(`Created directory ${dirname}`);
 
@@ -290,10 +292,19 @@ const generateForTag = async (tag, tags = []) => {
   }
 
   const date = new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(body.created_at));
-  const releaseNoteContent = `## [${body.name}](https://github.com/${user}/${repo}/releases/tag/${tag}) - ${date}
+  let releaseNoteContent = `## [${body.name}](https://github.com/${user}/${repo}/releases/tag/${tag}) - ${date}
 
 ${content}
 `;
+
+  // Remove <!-- Release notes generated using configuration in .github/release.yml at main --> from output if any
+  // Can cause rendering errors on mdx document
+  releaseNoteContent = releaseNoteContent.replace('<!-- Release notes generated using configuration in .github/release.yml at main -->', '');
+
+  // Remove any heading, nextra causing issue with TOC and headings above a certain lvl I don't want to be in the TOC
+  // releaseNoteContent = releaseNoteContent.replace(`## What's Changed`, `**What's Changed**`);
+  releaseNoteContent = releaseNoteContent.replace(/#.+ Other Changes/g, `**Other Changes**`);
+  releaseNoteContent = releaseNoteContent.replace(/#.+ Bug Fixes/g, `**Bug Fixes**`);
 
   return releaseNoteContent;
 }
@@ -305,7 +316,13 @@ const fetchAllReleases = async () => {
 
 const fetchAllTags = async () => {
   const releases = await fetchAllReleases();
-  return releases.map(release => release.tag_name);
+  let tags = releases.map(release => release.tag_name);
+
+  if (sinceTag) {
+    tags = tags.filter(tag => semver.gt(tag, sinceTag));
+  }
+
+  return tags;
 };
 
 
