@@ -1,0 +1,11 @@
+---
+title: "Pull Request #61"
+description: "Fix: Rename handling doesn't happen on newly created Attribute Set BP"
+---
+
+*[on January 30th, 2023](https://github.com/BlueprintAttributes/BlueprintAttributes/pull/61)*
+
+## Fix: Rename handling doesn't happen on newly created Attribute Set BP
+
+Fix  [#60](https://github.com/BlueprintAttributes/BlueprintAttributes/issues/60)
+

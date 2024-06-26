@@ -1,0 +1,13 @@
+---
+title: "Pull Request #82"
+description: "CI: Adding a new workflow to sync Test plugin to BlueprintAttributes/BlueprintAttributesTests repository"
+---
+
+*[on February 29th, 2024](https://github.com/BlueprintAttributes/BlueprintAttributes/pull/82)*
+
+## CI: Adding a new workflow to sync Test plugin to BlueprintAttributes/BlueprintAttributesTests repository
+
+Using <https://github.com/acrobat/subtree-splitter>
+
+Runs automatically on all branches, for any changes within `BlueprintAttributesTests/*`
+

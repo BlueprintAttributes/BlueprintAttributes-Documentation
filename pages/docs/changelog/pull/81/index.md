@@ -1,0 +1,70 @@
+---
+title: "Pull Request #81"
+description: "WIP work and experiment on SaveGame support"
+---
+
+*[on February 28th, 2024](https://github.com/BlueprintAttributes/BlueprintAttributes/pull/81)*
+
+## WIP work and experiment on SaveGame support
+
+[Runtime: Fixing an issue with clamping](https://github.com/BlueprintAttributes/BlueprintAttributes/pull/81/commits/f3a555f1f1c7946eefb9e7cbbdf80c5f7953bef2)
+[f3a555f](https://github.com/BlueprintAttributes/BlueprintAttributes/pull/81/commits/f3a555f1f1c7946eefb9e7cbbdf80c5f7953bef2)
+A case was happening of
+
+* InitDataTable was called with a Datatable and BaseValue of 1000, with 0 for Min and Max value
+* One property was clamped via FGBAClampDefinition and Property at 100 max
+* Then datatable logic kicks in and sets the BaseValue to the value defined in the DT, overriding previously clamped value (from property)
+* we would expect here the value to remain at 100
+
+***
+
+[WIP work and experiment on SaveGame support](https://github.com/BlueprintAttributes/BlueprintAttributes/pull/81/commits/b3fa4e05891d8f79e5fce54acee808c5ac655fdd)
+[b3fa4e0](https://github.com/BlueprintAttributes/BlueprintAttributes/pull/81/commits/b3fa4e05891d8f79e5fce54acee808c5ac655fdd)
+
+This time using a USaveGame object created with the standard CreateSaveGameFromSlot, LoadGameFromSlot, etc.
+
+SaveGame has a BinaryData array of bytes (TArray<uint8>) . Serialize called with an Archive baked by this array of bytes on Actor and its ASC.
+
+ASC in the test setup implements Serialize with:
+
+```cpp
+	Super::Serialize(Ar);
+
+	if (!Ar.IsSaveGame())
+	{
+		return;
+	}
+
+	// SerializeAttributeSets(Ar);
+
+	const TArray<UAttributeSet*>& AttributeSets = GetSpawnedAttributes();
+	for (UAttributeSet* AttributeSet : AttributeSets)
+	{
+		if (!AttributeSet)
+		{
+			continue;
+		}
+
+		AttributeSet->Serialize(Ar);
+	}
+```
+
+***
+
+[Refactor: Use UE\_VERSION\_NEWER\_THAN macros](https://github.com/BlueprintAttributes/BlueprintAttributes/pull/81/commits/99215dd2a8ae701cd52b2f0ee565703351221ea6)
+[99215dd](https://github.com/BlueprintAttributes/BlueprintAttributes/pull/81/commits/99215dd2a8ae701cd52b2f0ee565703351221ea6)
+to compare engine versions
+
+***
+
+[Runtime: FGBAUtils prefer dll export on methods](https://github.com/BlueprintAttributes/BlueprintAttributes/pull/81/commits/ee0d5c544d26981c7b98eee1fdf3a0c31f8d0505)
+
+[Runtime: Add FGBAUtils::SerializeAttributeSets](https://github.com/BlueprintAttributes/BlueprintAttributes/pull/81/commits/1c261a4fdfe018d39bbbf85c532e878e264c13e7)
+for backup. not actually used right now and not dll exported
+
+[Runtime: Move serialization helpers](https://github.com/BlueprintAttributes/BlueprintAttributes/pull/81/commits/914009cfc84dd8f6d42d76503bc602f872ec53c3)
+into their own Blueprint Library
+
+[Runtime: Move exec calculation helpers](https://github.com/BlueprintAttributes/BlueprintAttributes/pull/81/commits/64fba28e3f739cdb271fe01ddf244781d67f70d7)
+into their own Blueprint Library
+
