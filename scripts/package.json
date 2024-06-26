@@ -1,0 +1,26 @@
+{
+  "name": "scripts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "changelog.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "arg": "^5.0.2",
+    "date-fns": "^3.6.0",
+    "gh-got": "^10.0.0",
+    "got": "^14.4.1",
+    "mkdirp": "^3.0.1",
+    "remark-gfm": "^4.0.0",
+    "remark-github": "^12.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-stringify": "^11.0.0",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.0.0"
+  }
+}
