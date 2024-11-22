@@ -18,7 +18,7 @@ import semver from 'semver';
 const token = process.env.GITHUB_TOKEN;
 const user = `BlueprintAttributes`;
 const repo = `BlueprintAttributes`;
-const assetsPattern = `https://github.com/${user}/${repo}/assets/`;
+const assetsPatterns = [`https://github.com/${user}/${repo}/assets/`, `https://github.com/user-attachments/assets`];
 
 if (!token) {
   console.error(`No token could be found in process.env`);
@@ -43,7 +43,7 @@ const args = arg({
 
 console.log('arg', args);
 
-const output = args['--output'] || path.resolve('pages/docs/changelog.md');
+const output = args['--output'] || path.resolve('pages/docs/changelog.mdx');
 const sinceTag = args['--tag'];
 
 console.log(`Using token "${token}" to fetch release note`);
@@ -52,12 +52,14 @@ console.log(`---`);
 
 // List of heading text we know and always want to have at a fixed 5 lvl heading
 const fixedHeadings = [
-  `Breaking Changes 🛠`,
-  `New Features 🎉`,
-  `Bug Fixes`,
-  `Other Changes`
+  { match: /#.+ Breaking Changes 🛠/g, replaceValue: `Breaking Changes`, },
+  { match: /#.+ Breaking Changes/g, replaceValue: `Breaking Changes` },
+  { match: /#.+ New Features 🎉/g, replaceValue: `New Features` },
+  { match: /#.+ New Features/g, replaceValue: `New Features` },
+  { match: /#.+ Bug Fixes/g, replaceValue: `Bug Fixes` },
+  { match: /#.+ Other Changes/g, replaceValue: `Other Changes` },
 ];
-
+    
 // List of Pull Request found in the release notes, to fetch and generate just after markdown parsing
 // List is filled during markdown parsing
 
@@ -85,7 +87,6 @@ const remarkTransformPullRequest = () => {
         const match = node.url.match(reg);
 
         if (match) {
-          console.log('MAAAAAAAAAAATCH')
           node.url = `/docs/changelog/pull/${match[2]}`;
           if (node.children && node.children[0]) {
             node.children[0].value = `#${match[2]}`;
@@ -101,6 +102,18 @@ const remarkTransformPullRequest = () => {
   };
 };
 
+/** 
+ * To deal with images in issues / pull requests that might have different url patterns
+ * 
+ * e.g. https://github.com/user-attachments/assets/f5cf52be-f6fa-4996-bd98-3f1a5426753f or
+ * https://github.com/BlueprintAttributes/BlueprintAttributes/assets
+ * 
+ * Passing URL string for the image to that function will return either null, or the asset pattern it is using
+ */
+const findUrlAssetsPattern = (url) => {
+  return assetsPatterns.find(pattern => url.startsWith(pattern));
+};
+
 const remarkRewritePullRequestImageAssetsUrl = (imagesToDownload) => {
   return () => {
     return (tree) => {
@@ -108,7 +121,8 @@ const remarkRewritePullRequestImageAssetsUrl = (imagesToDownload) => {
         if (node.type === 'image') {
           const { url } = node;
 
-          if (url.startsWith(assetsPattern)) {
+          const assetsPattern = findUrlAssetsPattern(url);
+          if (assetsPattern) {
             imagesToDownload.push(url);
             node.url = `./${url.replace(assetsPattern, '').replace('/', '-')}.png`;
           }
@@ -120,6 +134,27 @@ const remarkRewritePullRequestImageAssetsUrl = (imagesToDownload) => {
   };
 };
 
+
+const remarkRewriteChangelogImageAssetsUrl = (imagesToDownload, relativeUrl) => {
+  return () => {
+    return (tree) => {
+      visit(tree, (node, index, parent) => {
+        if (node.type === 'image') {
+          const { url } = node;
+
+          const assetsPattern = findUrlAssetsPattern(url);
+          if (assetsPattern) {
+            imagesToDownload.push(url);
+            // node.url = `./${url.replace(assetsPattern, '').replace('/', '-')}.png`;
+            node.url = `./${relativeUrl}/${url.replace(assetsPattern, '').replace('/', '-')}.png`;
+          }
+
+          return;
+        }
+      });
+    };
+  };
+};
 
 const remarkTransformReleaseNote = (pullRequestLinks) => {
   return () => {
@@ -136,7 +171,8 @@ const remarkTransformReleaseNote = (pullRequestLinks) => {
           }
 
           // Increase any known heading to a fixed 5 level heading depth
-          const isFixedHeading = !!children.find(child => fixedHeadings.includes(child.value));
+          const searchHeadings = fixedHeadings.map(heading => heading.replaceValue);
+          const isFixedHeading = !!children.find(child => searchHeadings.includes(child.value));
           if (isFixedHeading) {
             node.depth = 5;
             return;
@@ -151,13 +187,17 @@ const remarkTransformReleaseNote = (pullRequestLinks) => {
           const reg = new RegExp(`https://github.com/${user}/${repo}/(pull|issues)/(\\d+)$`);
           const match = node.url.match(reg);
 
-          if (match) {
+          if (match && match.length) {
+            const [url, pullOrIssue, number] = match;
+            const apiSubpath = pullOrIssue === 'pull' ? 'pulls' : 'issues';
+            const urlSubpath = pullOrIssue === 'pull' ? 'pull' : 'issue';
             pullRequestLinks.push({
-              url: match[0],
-              api: `repos/${user}/${repo}/pulls/${match[2]}`
+              url,
+              api: `repos/${user}/${repo}/${apiSubpath}/${number}`,
+              urlSubpath
             });
 
-            node.url = `changelog/pull/${match[2]}`;
+            node.url = `changelog/${urlSubpath}/${match[2]}`;
             if (node.children && node.children[0]) {
               node.children[0].value = `#${match[2]}`;
             }
@@ -171,10 +211,16 @@ const remarkTransformReleaseNote = (pullRequestLinks) => {
 };
 
 const fetchPullRequest = async ({ url, api }) => {
+  console.log(`Fetching url ${url} - api ${api}`);
   return await got(api);
 };
 
 const fetchImage = (image, dirname) => {
+  const assetsPattern = findUrlAssetsPattern(image);
+  if (!assetsPattern) {
+    throw new Error(`Unable to find asset pattern for image URL: ${image}`)
+  }
+  
   return new Promise((resolve, reject) => {
     const filename = image
       .replace(assetsPattern, '')
@@ -204,6 +250,9 @@ const getReleaseNoteContent = async (tag) => {
   let pullRequestLinks = [];
 
   // Parse and transform markdown of release note
+  let imagesToDownload = [];
+  
+  const relativeUrl = `changelog/tags/${tag}`;
 
   const content = await unified()
     .use(remarkParse)
@@ -215,10 +264,20 @@ const getReleaseNoteContent = async (tag) => {
     .use(remarkTransformReleaseNote(pullRequestLinks))
     .use(remarkStringify)
 
+    .use(remarkRewriteChangelogImageAssetsUrl(imagesToDownload, relativeUrl))
     // .use(remarkRehype)
     // .use(rehypeSanitize)
     // .use(rehypeStringify)
-    .process(body.body)
+    .process(body.body);
+
+  if (imagesToDownload.length) {
+    const dirname = path.join(path.dirname(output), relativeUrl);
+    await mkdirp(dirname);
+    console.log(`Created directory ${dirname}`);
+
+    const promises = imagesToDownload.map(image => fetchImage(image, dirname));
+    Promise.all(promises).catch(console.error);
+  }
 
   return {
     content: String(content),
@@ -236,7 +295,7 @@ const getPullRequestContent = async (tag, result) => {
   let imagesToDownload = [];
 
   // transform markdown content
-  const content = await unified()
+  let content = await unified()
     .use(remarkParse)
     .use(remarkGfm)
     .use(remarkGithub, {
@@ -247,11 +306,20 @@ const getPullRequestContent = async (tag, result) => {
     .use(remarkStringify)
     .process(body || '');
 
-  const promises = imagesToDownload.map(image => fetchImage(image, path.join(path.dirname(output), `changelog/pull/${number}`)));
+  const reg = new RegExp(`https://github.com/${user}/${repo}/(pull|issues)/(\\d+)$`);
+  const [matchedUrl, matchedPullOrIssue, matchedNumber] = html_url.match(reg);
+  const frontmatterTitle = matchedPullOrIssue === 'pull' ? `Pull Request #${number}` : `Issue #${number}`
+  const urlSubpath = matchedPullOrIssue === 'pull' ? 'pull' : 'issue';
+
+  const promises = imagesToDownload.map(image => fetchImage(image, path.join(path.dirname(output), `changelog/${urlSubpath}/${number}`)));
   Promise.all(promises).catch(console.error);
 
+  // Convert any auto link
+  content = content.toString();
+  content = content.replace(/<(http.+)>/g, '[$1]($1)');
+
   return `---
-title: "Pull Request #${number}"
+title: "${frontmatterTitle}"
 description: "${title}"
 ---
 
@@ -277,15 +345,17 @@ const generateForTag = async (tag, tags = []) => {
   // Fetch and build each Pull Request page
 
   for (const link of pullRequestLinks) {
+    console.log(`Trying fetch pull request`, link)
+    const { url, api, urlSubpath } = link;
     const result = await fetchPullRequest(link);
     const { number } = result.body;
-    const dirname = path.join(path.dirname(output), `changelog/pull/${number}`);
+    const dirname = path.join(path.dirname(output), `changelog/${urlSubpath}/${number}`);
     await mkdirp(dirname);
     console.log(`Created directory ${dirname}`);
 
     const content = await getPullRequestContent(tag, result);
 
-    const filename = path.join(dirname, 'index.md');
+    const filename = path.join(dirname, 'index.mdx');
     await fs.writeFile(filename, content);
 
     console.log(`Created file at ${filename}`);
@@ -299,12 +369,15 @@ ${content}
 
   // Remove <!-- Release notes generated using configuration in .github/release.yml at main --> from output if any
   // Can cause rendering errors on mdx document
-  releaseNoteContent = releaseNoteContent.replace('<!-- Release notes generated using configuration in .github/release.yml at main -->', '');
+  releaseNoteContent = releaseNoteContent.replace(/<!-- Release notes generated using configuration in .github\/release.yml at ([^\s]+) -->/g, '');
+
+  // Convert any auto link
+  releaseNoteContent = releaseNoteContent.replace(/<(http.+)>/g, '[$1]($1)');
 
   // Remove any heading, nextra causing issue with TOC and headings above a certain lvl I don't want to be in the TOC
-  // releaseNoteContent = releaseNoteContent.replace(`## What's Changed`, `**What's Changed**`);
-  releaseNoteContent = releaseNoteContent.replace(/#.+ Other Changes/g, `**Other Changes**`);
-  releaseNoteContent = releaseNoteContent.replace(/#.+ Bug Fixes/g, `**Bug Fixes**`);
+  for (const { match, replaceValue } of fixedHeadings) {
+    releaseNoteContent = releaseNoteContent.replace(match, `**${replaceValue}**`);
+  }
 
   return releaseNoteContent;
 }
