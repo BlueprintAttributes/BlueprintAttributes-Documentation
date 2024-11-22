@@ -1,0 +1,19 @@
+---
+title: "Pull Request #117"
+description: "Prevent crash upon using AttributeData in an Owner class that is not an UAttributeSet (In a struct, for instance)"
+---
+
+*[on November 21st, 2024](https://github.com/BlueprintAttributes/BlueprintAttributes/pull/117)*
+
+## Prevent crash upon using AttributeData in an Owner class that is not an UAttributeSet (In a struct, for instance)
+
+Prevent crash upon using AttributeData in an Owner class different than UGBAAttributeSetBlueprintBase
+
+Bare minimum code to prevent crash. Have to further work on this to better feedback user and raise a compilation warning or editor notification about incorrect use of the type.
+
+Shouldn't use the GameplayAttributeData type, as opposed to GameplayAttribute type in a struct. This PR prevents a crash from happening if used that way.
+
+Relates to [#102](https://github.com/BlueprintAttributes/BlueprintAttributes/issues/102)
+
+Relates to [https://discord.com/channels/198737843743358985/1224734296741253302/1262396074069463074](https://discord.com/channels/198737843743358985/1224734296741253302/1262396074069463074)
+

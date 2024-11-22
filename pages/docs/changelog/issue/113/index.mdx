@@ -1,0 +1,17 @@
+---
+title: "Issue #113"
+description: "C++ Scaffold - In case of clamped attribute, no clamp definitions are generated."
+---
+
+*[on August 20th, 2024](https://github.com/BlueprintAttributes/BlueprintAttributes/issues/113)*
+
+## C++ Scaffold - In case of clamped attribute, no clamp definitions are generated.
+
+As per Astaror feedback on discord
+
+[https://discord.com/channels/198737843743358985/1224734296741253302/1275247597870645313](https://discord.com/channels/198737843743358985/1224734296741253302/1275247597870645313)
+
+***
+
+I believe the issue is if you define soem clamping rules / definitions in Blueprint and details panel, the scaffolded C++ class will eventually generate the class and struct definition, but without setting up the inner properties to reflect what was configured in details panel.
+

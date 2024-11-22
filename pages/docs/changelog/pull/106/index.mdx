@@ -1,0 +1,15 @@
+---
+title: "Pull Request #106"
+description: "Add REPLICATED_BASE_CLASS to AttributeSet base class, preventing crash from happening on projects with push model enabled."
+---
+
+*[on June 16th, 2024](https://github.com/BlueprintAttributes/BlueprintAttributes/pull/106)*
+
+## Add REPLICATED_BASE_CLASS to AttributeSet base class, preventing crash from happening on projects with push model enabled.
+
+Prevents assertion check from happening on push model enabled projects.
+
+This shouldn't have any impact on non push model enabled project, as `WITH_PUSH_MODEL` will evaluate to false resulting in a noop.
+
+Checking build against 5.2 and 5.3
+

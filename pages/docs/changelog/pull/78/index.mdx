@@ -1,0 +1,19 @@
+---
+title: "Pull Request #78"
+description: "Initial set of BP helpers for Exec Calculations support in Blueprints"
+---
+
+*[on February 22nd, 2024](https://github.com/BlueprintAttributes/BlueprintAttributes/pull/78)*
+
+## Initial set of BP helpers for Exec Calculations support in Blueprints
+
+TODO:
+
+* Unit / Functional tests
+* Further expose Exec class helpers
+* Documentation
+
+In the long run:
+
+* [x] Rework Exec class BP capture attributes to be based on the relevant attribute to capture, like it's done in the Gameplay Effect details customization. Do the same thing but on the K2 Pin.
+
