@@ -254,7 +254,7 @@ const getReleaseNoteContent = async (tag) => {
   
   const relativeUrl = `changelog/tags/${tag}`;
 
-  const content = await unified()
+  let content = await unified()
     .use(remarkParse)
     .use(remarkRemoveMentions)
     .use(remarkGfm)
@@ -265,9 +265,6 @@ const getReleaseNoteContent = async (tag) => {
     .use(remarkStringify)
 
     .use(remarkRewriteChangelogImageAssetsUrl(imagesToDownload, relativeUrl))
-    // .use(remarkRehype)
-    // .use(rehypeSanitize)
-    // .use(rehypeStringify)
     .process(body.body);
 
   if (imagesToDownload.length) {
@@ -278,6 +275,11 @@ const getReleaseNoteContent = async (tag) => {
     const promises = imagesToDownload.map(image => fetchImage(image, dirname));
     Promise.all(promises).catch(console.error);
   }
+
+  content = content.toString();
+
+  // Wrap all images into the Zoom component
+  content = content.replace(/(!\[[^\]]+\]\([^\)]+\))/g, '<Zoom>\n$1\n</Zoom>');
 
   return {
     content: String(content),
@@ -318,10 +320,15 @@ const getPullRequestContent = async (tag, result) => {
   content = content.toString();
   content = content.replace(/<(http.+)>/g, '[$1]($1)');
 
+  // Wrap all images into the Zoom component
+  content = content.replace(/(!\[[^\]]+\]\([^\)]+\))/g, '<Zoom>\n$1\n</Zoom>');
+
   return `---
 title: "${frontmatterTitle}"
 description: "${title}"
 ---
+
+import Zoom from 'react-medium-image-zoom'
 
 *[on ${format(new Date(created_at), 'PPP')}](${html_url})*
 
@@ -406,6 +413,8 @@ const main = async () => {
   let contents = `---
 description: Changelog
 ---
+
+import Zoom from 'react-medium-image-zoom'
 
 `;
 
