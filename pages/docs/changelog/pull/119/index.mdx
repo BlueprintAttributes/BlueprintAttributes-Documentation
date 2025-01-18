@@ -1,0 +1,67 @@
+---
+title: "Pull Request #119"
+description: "fix: handle attribute renames / removed in 5.5"
+---
+
+import Zoom from 'react-medium-image-zoom'
+
+*[on January 16th, 2025](https://github.com/BlueprintAttributes/BlueprintAttributes/pull/119)*
+
+## fix: handle attribute renames / removed in 5.5
+
+**fix: handle attribute renames in 5.5**
+
+Changed 2 things:
+
+* Removed usage of `FGameplayAttribute::StaticStruct()->ExportText()` in favor of `Property->GetPathName()` which already has the AttributeName and Package PathName information
+* Removed check on `!Attribute.IsValid()` post compile when we try to update the previous references to old name. In 5.5, this returns true even though this is not the case anymore.
+
+On 5.4, Attribute.IsValid() used to return invalid as expected
+
+On 5.5, the `TFieldPath<FProperty> Attribute` is considered valid, which is likely why the rename doesn't happen
+and why the bits in `FGameplayAttribute::PostSerialize` to mark the attribute as searchable is executed (and can result
+in a crash when for instance compiling / saving a GE, when OwnerVariant is accessed)
+
+The issue still persists when an attribute variable is removed and needs to be handled (this gets addressed in this PR). 5.4 was more resilient to that, and having a None attribute no longer existing attribute was not crashing the editor.
+
+***
+
+**refactor: introduce IGBAAttributeGlobalHandler**
+
+Interface for custom referencer handler not tied to specific references.
+
+Gets lifecycle methods invoked once per event, while referencer handler tied to a given UObject CDO gets invoked once per referencer (assets having a dependency on AttributeSet)
+
+***
+
+**refactor: add support for OnVariableRemoved**
+
+* Handle attribute removal in 5.5
+* Broadcast FGBADelegates::OnVariableRemoved for GBAEditorSubsystem and referencer handlers.
+
+***
+
+Checks in-editor below.
+
+Attribute renamed:
+
+* [x] Modifiers
+* [x] Modifiers Backing Attribute
+* [x] Duration
+* [x] Cues
+* [x] Remove Gameplay Effect Query Component
+* [x] Immunity Effect Query Component
+* [x] K2 Nodes (GetFloatAttribute)
+* [x] K2 Switch Node (SwitchOnGameplayAttribute)
+
+Attribute removed:
+
+* [x] Modifiers
+* [x] Modifiers Backing Attribute
+* [x] Duration
+* [x] Cues
+* [x] Remove Gameplay Effect Query Component
+* [x] Immunity Effect Query Component
+* [x] K2 Nodes (GetFloatAttribute)
+* [x] K2 Switch Node (SwitchOnGameplayAttribute)Changed 2 things:
+
